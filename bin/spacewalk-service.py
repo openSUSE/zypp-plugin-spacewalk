@@ -8,9 +8,16 @@ import sys
 import os
 sys.path.append("/usr/share/rhn/")
 from up2date_client import rhnChannel
-#from up2date_client import up2dateErrors
+from up2date_client import up2dateErrors
 
-svrChannels = rhnChannel.getChannelDetails()
+try:
+    svrChannels = rhnChannel.getChannelDetails()
+except up2dateErrors.Error, e:
+    sys.stderr.write("%s\n" % e)
+    exit(1)
+except:
+    exit(1)
+
 service_name = os.path.splitext(os.path.basename(sys.argv[0]))[0]
 print "# Repositories for %s" % service_name
 for channel in svrChannels:
