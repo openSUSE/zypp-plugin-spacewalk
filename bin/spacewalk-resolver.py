@@ -59,7 +59,8 @@ class SpacewalkResolverPlugin(Plugin):
         except up2dateErrors.RhnServerException, e:
             self.answer("ERROR", {}, str(e))
         
-        url = "%s/GET-REQ/%s" % (self.channel['url'], self.channel['label'])
+        url = "%s/GET-REQ/%s?head_requests=no" % (self.channel['url'], self.channel['label'])
+        
         self.answer("RESOLVEDURL", self.auth_headers, url)
 
 
