@@ -1,6 +1,7 @@
 Name:    zypp-plugin-spacewalk
 Version: 0.1
 Release: 0
+Group:	 System Environment/Base
 License: Unclear
 Summary: Client side Spacewalk integration for ZYpp
 Source0: zypp-plugin-spacewalk.tar.bz2
