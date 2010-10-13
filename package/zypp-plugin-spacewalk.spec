@@ -22,20 +22,25 @@ a Spacewalk compatible server.
 
 %install
 %{__mkdir_p} %{buildroot}%{_prefix}/lib/zypp/plugins/services
-%{__mkdir_p} %{buildroot}%{_prefix}/lib/zypp/plugins/resolver
+%{__mkdir_p} %{buildroot}%{_prefix}/lib/zypp/plugins/urlresolver
 
 %{__install} bin/spacewalk-service.py %{buildroot}%{_prefix}/lib/zypp/plugins/services/spacewalk
-%{__install} bin/spacewalk-resolver.py %{buildroot}%{_prefix}/lib/zypp/plugins/resolver/spacewalk
+%{__install} bin/spacewalk-resolver.py %{buildroot}%{_prefix}/lib/zypp/plugins/urlresolver/spacewalk
 
 %{__mkdir_p} %{buildroot}%{_datadir}/%{name}/python
 %{__install} python/zypp/plugins.py %{buildroot}%{_datadir}/%{name}/python
+
+%{__mkdir_p} %{buildroot}%{_datadir}/rhn/actions
+%{__install} bin/spacewalk-action-package.py %{buildroot}%{_datadir}/rhn/actions/packages.py
 
 %files
 %defattr(-,root,root)
 %dir %{_prefix}/lib/zypp
 %dir %{_prefix}/lib/zypp/plugins
 %dir %{_prefix}/lib/zypp/plugins/services
-%dir %{_prefix}/lib/zypp/plugins/resolver
+%dir %{_prefix}/lib/zypp/plugins/urlresolver
+%dir %{_datadir}/rhn/actions
+%{_datadir}/rhn/actions/packages.py
 %{_prefix}/lib/zypp/plugins/services/spacewalk
-%{_prefix}/lib/zypp/plugins/resolver/spacewalk
+%{_prefix}/lib/zypp/plugins/urlresolver/spacewalk
 %{_datadir}/%{name}/python/plugins.py
