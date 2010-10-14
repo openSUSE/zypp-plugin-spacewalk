@@ -72,7 +72,7 @@ class Zypper:
         return (task.returncode, "\n".join(errors), {})
         
     def install(self, package_list):
-        args = ["-n", "-x", "install", "-D"]
+        args = ["-n", "-x", "install"]
         args.extend(package_list)
         return self.__execute(args)
 
