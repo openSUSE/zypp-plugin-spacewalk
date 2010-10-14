@@ -5,10 +5,13 @@ Group:	 System Environment/Base
 License: Unclear
 Summary: Client side Spacewalk integration for ZYpp
 Source0: zypp-plugin-spacewalk.tar.bz2
+BuildRequires: libzypp => 6.33.4
+Requires: libzypp >= 6.33.4
 Requires: python
 Requires: rhn-client-tools >= 1.1.15
 Provides: zypp-service-plugin(spacewalk) = %{version}
 Provides: zypp-media-plugin(spacewalk) = %{version}
+BuildRoot:      %{_tmppath}/%{name}-%{version}-build  
 
 %description
 This plugin allows a ZYpp powered Linux system to see Spacewalk
