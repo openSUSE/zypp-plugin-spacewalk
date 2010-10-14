@@ -45,6 +45,7 @@ a Spacewalk compatible server.
 %dir %{_prefix}/lib/zypp/plugins
 %dir %{_prefix}/lib/zypp/plugins/services
 %dir %{_prefix}/lib/zypp/plugins/urlresolver
+%dir %{_datadir}/%{name}
 %{_datadir}/rhn/actions/packages.py
 %{_prefix}/lib/zypp/plugins/services/spacewalk
 %{_prefix}/lib/zypp/plugins/urlresolver/spacewalk
