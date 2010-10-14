@@ -6,6 +6,8 @@ License: Unclear
 Summary: Client side Spacewalk integration for ZYpp
 Source0: zypp-plugin-spacewalk.tar.bz2
 BuildRequires: libzypp => 6.33.4
+BuildRequires: rhn-client-tools  >= 1.1.15
+BuildRequires: rhn_check
 Requires: libzypp >= 6.33.4
 Requires: python
 Requires: rhn-client-tools >= 1.1.15
@@ -43,7 +45,6 @@ a Spacewalk compatible server.
 %dir %{_prefix}/lib/zypp/plugins
 %dir %{_prefix}/lib/zypp/plugins/services
 %dir %{_prefix}/lib/zypp/plugins/urlresolver
-%dir %{_datadir}/rhn/actions
 %{_datadir}/rhn/actions/packages.py
 %{_prefix}/lib/zypp/plugins/services/spacewalk
 %{_prefix}/lib/zypp/plugins/urlresolver/spacewalk
