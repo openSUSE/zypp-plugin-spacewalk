@@ -7,7 +7,7 @@ Summary: Client side Spacewalk integration for ZYpp
 Source0: zypp-plugin-spacewalk.tar.bz2
 BuildRequires: libzypp => 6.33.4
 BuildRequires: rhn-client-tools  >= 1.1.15
-BuildRequires: rhn_check
+BuildRequires: rhn-check
 Requires: libzypp >= 6.33.4
 Requires: python
 Requires: rhn-client-tools >= 1.1.15
