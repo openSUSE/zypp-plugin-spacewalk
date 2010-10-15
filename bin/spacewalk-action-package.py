@@ -33,7 +33,6 @@ from up2date_client import up2dateLog
 from up2date_client import config
 from up2date_client import rpmUtils
 from up2date_client import rhnPackageInfo
-from rpm import RPMPROB_FILTER_OLDPACKAGE
 
 import subprocess
 import xml.dom.minidom
@@ -55,6 +54,17 @@ __rhnexport__ = [
     'verify',
     'verifyAll'
 ]
+
+def __package_name_from_tup__(tup):
+    """ Create a zypper package tuple from an rhn package tuple.
+    Choose from the above styles to be compatible with yum.parsePackage
+                                                    """
+    n, v, r, e, a = tup[:]
+    if not e:
+        # set epoch to 0 as yum/zypper expects
+        e = '0'
+    pkginfo = '%s-%s-%s' % (n, v, r)
+    return pkginfo
 
 class Zypper:
     def __init__(self):
@@ -88,17 +98,42 @@ class Zypper:
         args.extend(package_list)
         return self.__execute(args)
 
+    def update(self):
+        args = ["-n", "-x", "update"]
+        return self.__execute(args)
 
-def __package_name_from_tup(tup):
-    """ Create a zypper package tuple from an rhn package tuple.
-    Choose from the above styles to be compatible with yum.parsePackage
-                                                    """
-    n, v, r, e, a = tup[:]
-    if not e:
-        # set epoch to 0 as yum/zypper expects
-        e = '0'
-    pkginfo = '%s-%s-%s' % (n, v, r)
-    return pkginfo
+    def __transact_args__(self, transaction_data):
+        """ Add packages to transaction. 
+            transaction_data is in format:
+            { 'packages' : [
+            [['name', '1.0.0', '1', '', ''], 'e'], ...
+            # name,    versio, rel., epoch, arch,   flag
+            ]}
+            where flag can be:
+                i - install
+                u - update
+                e - remove
+                r - rollback
+            Note: install and update will check for dependecies and
+            obsoletes and will install them if needed.
+            Rollback do not check anything and will assume that state
+            to which we are rolling back should be correct.
+        """
+
+        args = ["-n", "-x", "install", "--"]
+                
+        for pkgtup, action in transaction_data['packages']:
+            if ((action == "u") or (action == "i") or (action == "r")):
+                args.append("+" + __package_name_from_tup__(pkgtup))
+            elif action == 'e':
+                args.append("-" + __package_name_from_tup__(pkgtup))
+            else:
+                assert False, "Unknown package transaction action."
+        return args
+
+    def transact(self, transaction_data):
+        args = self.__transact_args__(transaction_data)
+        return self.__execute(args)
 
 def remove(package_list, cache_only=None):
     """We have been told that we should remove packages"""
@@ -112,7 +147,7 @@ def remove(package_list, cache_only=None):
 
     log.log_debug("Called remove", package_list)
     zypper = Zypper()
-    return zypper.remove([__package_name_from_tup(x) for x in package_list])
+    return zypper.remove([__package_name_from_tup__(x) for x in package_list])
 
 def update(package_list, cache_only=None):
     """We have been told that we should retrieve/install packages"""
@@ -121,7 +156,7 @@ def update(package_list, cache_only=None):
 
     log.log_me("Called update", package_list)
     zypper = Zypper()
-    return zypper.install([__package_name_from_tup(x) for x in package_list])
+    return zypper.install([__package_name_from_tup__(x) for x in package_list])
 
 def runTransaction(transaction_data, cache_only=None):
     """ Run a transaction on a group of packages. 
@@ -132,17 +167,14 @@ def runTransaction(transaction_data, cache_only=None):
     """
     if cache_only:
         return (0, "no-ops for caching", {})
-    
-    for index, data in enumerate(transaction_data['packages']):
-        if data[1] == 'i':
-            transaction_data['packages'][index][1] = 'r'
-    # TODO
-    return (1, "runTransaction not implemented on SUSE systems yet", {})
+    log.log_me("Called run transaction")
+    zypper = Zypper()
+    return zypper.transact(transaction_data)    
 
 def fullUpdate(force=0, cache_only=None):
     """ Update all packages on the system. """
-    # TODO
-    return (1, "fullUpdate not implemented on SUSE systems yet", {})
+    zypper = Zypper()
+    return zypper.update()
 
 def checkNeedUpdate(rhnsd=None, cache_only=None):
     """ Check if the locally installed package list changed, if
@@ -189,8 +221,6 @@ def refresh_list(rhnsd=None, cache_only=None):
     if cache_only:
         return (0, "no-ops for caching", {})
     log.log_debug("Called refresh_rpmlist")
-
-    ret = None
 
     try:
         rhnPackageInfo.updatePackageProfile()
@@ -253,6 +283,13 @@ def verifyAll(cache_only=None):
 # just for testing
 if __name__ == "__main__":
     #print update([['rubygem-thoughtbot-shoulda', '2.9.2', '1.1', '', 'x86_64']])
-    print remove([['ant', '1.7.1', '12.1', '', 'x86_64']])
+    #print remove([['ant', '1.7.1', '12.1', '', 'x86_64']])
 
+    print "Transaction args:"
+    transaction = { 'packages' : [
+            [['foo', '1.0.0', '1', '', ''], 'e'],
+            [ ['bar', '2.0.0', '2', '', ''], 'i'] ]}
+    zypper = Zypper()
+    print zypper.__transact_args__(transaction)
+    
     
