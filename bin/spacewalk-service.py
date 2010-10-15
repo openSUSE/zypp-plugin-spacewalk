@@ -35,13 +35,31 @@ except:
     exit(1)
 
 service_name = os.path.splitext(os.path.basename(sys.argv[0]))[0]
-print "# Repositories for %s" % service_name
+print "# Channels for service %s" % service_name
 for channel in svrChannels:
     print
+    if channel['name']:
+        print "# Name:        %s" % channel['name']
+    if channel['summary']:
+        print "# Summary:     %s" % channel['summary']
+    if channel['description']:
+        print "# Description:"
+        for line in [line for line in channel['description'].split(os.linesep)]:
+            print "#   %s" % line
+        print "#"
+    if channel['type']:
+        print "# Type:         %s" % channel['type']
+    if channel['version']:
+        print "# Version:      %s" % channel['version']
+    if channel['arch']:
+        print "# Architecture: %s" % channel['arch']
+    if channel['gpg_key_url']:
+        print "# Gpg Key:      %s" % channel['gpg_key_url']
     print "[%s]" % channel['label']
     print "name=%s" % channel['name']
     print "baseurl=plugin:spacewalk?channel=%s" % channel['label']
     print "enabled=1"
-
+    print "autorefresh=1"
+    
 
 
