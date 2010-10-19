@@ -38,7 +38,7 @@ class Plugin:
             # ... do something
             answer('COMMAND', {}, body)
     """
-    
+
     def __init__(self):
         self.framestack = []
         self.state = "START"
@@ -51,15 +51,21 @@ class Plugin:
             self.headers = {}
             self.body = ""
 
-    def answer(self, command, headers, body=""):
+    def answer(self, command, headers={}, body=""):
         sys.stdout.write("%s\n" % command)
         for k,v in headers.items():
             sys.stdout.write("%s:%s\n" % (k,v))
-        sys.stdout.write("\n")            
+        sys.stdout.write("\n")
         sys.stdout.write(body)
         sys.stdout.write("%s" % chr(0))
         sys.stdout.flush()
-        
+
+    def ack(self, headers={}, body=""):
+        self.answer( "ACK", headers,  body )
+
+    def error(self, headers={}, body=""):
+        self.answer( "ERROR", headers,  body )
+
     def current_frame(self):
         return self.framestack[len(self.framestack) - 1]
 
