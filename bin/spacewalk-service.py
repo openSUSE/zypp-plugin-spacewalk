@@ -10,7 +10,7 @@
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.   See the
 # GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, contact Novell, Inc.
 #
@@ -60,6 +60,10 @@ for channel in svrChannels:
     print "baseurl=plugin:spacewalk?channel=%s" % channel['label']
     print "enabled=1"
     print "autorefresh=1"
-    
-
+    if channel['type']:
+        print "type=%s" % channel['type']
+    if channel['gpg_key_url']:
+	print "gpgkey=%s" % channel['gpg_key_url']
+    else:
+	print "gpgcheck=0"
 
