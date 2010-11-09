@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Nov  9 12:26:27 CET 2010 - ma@suse.de
+
+- Add /var/lib/up2date directory to filelist.
+
+-------------------------------------------------------------------
 Thu Sep 30 09:04:05 UTC 2010 - dmacvicar@novell.com
 
 - initial version

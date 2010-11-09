@@ -13,7 +13,7 @@ Requires: python
 Requires: rhn-client-tools >= 1.1.15
 Provides: zypp-service-plugin(spacewalk) = %{version}
 Provides: zypp-media-plugin(spacewalk) = %{version}
-BuildRoot:      %{_tmppath}/%{name}-%{version}-build  
+BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 
 %description
 This plugin allows a ZYpp powered Linux system to see Spacewalk
@@ -41,6 +41,8 @@ a Spacewalk compatible server.
 %{__mkdir_p} %{buildroot}%{_datadir}/rhn/actions
 %{__install} bin/spacewalk-action-package.py %{buildroot}%{_datadir}/rhn/actions/packages.py
 
+%{__mkdir_p} %{buildroot}%{_var}/lib/up2date
+
 %files
 %defattr(-,root,root)
 %dir %{_prefix}/lib/zypp
@@ -50,6 +52,7 @@ a Spacewalk compatible server.
 %dir %{_prefix}/lib/zypp/plugins/urlresolver
 %dir %{_datadir}/%{name}
 %dir %{_datadir}/%{name}/python
+%dir %{_var}/lib/up2date
 %{_datadir}/rhn/actions/packages.py
 %{_prefix}/lib/zypp/plugins/services/spacewalk
 %{_prefix}/lib/zypp/plugins/system/spacewalk
