@@ -10,7 +10,7 @@
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.   See the
 # GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, contact Novell, Inc.
 #
@@ -34,30 +34,41 @@ if "spacewalk-resolver.py" in sys.argv[0]:
     sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '../python/zypp'))
 else:
     sys.path.insert(0, "/usr/share/zypp-plugin-spacewalk/python")
-    
+
 from plugins import Plugin
 
 class SpacewalkResolverPlugin(Plugin):
 
+    """ Pure exception handling """
     def RESOLVEURL(self, headers, body):
+	try:
+	    self.doRESOLVEURL(headers, body)
+	except up2dateErrors.Error, e:
+            self.answer("ERROR", {}, str(e))
+	except:
+            self.answer("ERROR", {}, traceback.format_exc())
 
-        spacewalk_auth_headers = ['X-RHN-Server-Id', 
+    """ RESOLVEURL action """
+    def doRESOLVEURL(self, headers, body):
+
+        spacewalk_auth_headers = ['X-RHN-Server-Id',
                                   'X-RHN-Auth-User-Id',
                                   'X-RHN-Auth',
                                   'X-RHN-Auth-Server-Time',
                                   'X-RHN-Auth-Expire-Offset']
-        
+
         if not os.geteuid() == 0:
             # you can't access auth data if you are not root
             self.answer("ERROR", {}, "Can't access managed repositores without root access")
             return
 
-        
+
         if not headers['channel']:
             self.answer("ERROR", {}, "Missing argument channel")
             return
 
-        details = rhnChannel.getChannelDetails();
+	details = rhnChannel.getChannelDetails();
+
         for channel in details:
             if channel['label'] == headers['channel']:
                 self.channel = channel
@@ -66,17 +77,14 @@ class SpacewalkResolverPlugin(Plugin):
             return
 
         self.auth_headers = {}
-        try:
-            login_info = up2dateAuth.getLoginInfo()
-            for k,v in login_info.items():
-                if k in spacewalk_auth_headers:
-                    self.auth_headers[k] = v
-            #self.answer("META", li)
-        except up2dateErrors.RhnServerException, e:
-            self.answer("ERROR", {}, str(e))
-        
+	login_info = up2dateAuth.getLoginInfo()
+	for k,v in login_info.items():
+	    if k in spacewalk_auth_headers:
+		self.auth_headers[k] = v
+	#self.answer("META", li)
+
         url = "%s/GET-REQ/%s?head_requests=no" % (self.channel['url'], self.channel['label'])
-        
+
         self.answer("RESOLVEDURL", self.auth_headers, url)
 
 
