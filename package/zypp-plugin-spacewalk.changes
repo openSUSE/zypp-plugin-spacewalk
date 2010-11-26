@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Nov 26 11:36:09 CET 2010 - ma@suse.de
+
+- Fix missing import (bnc#656066)
+
+-------------------------------------------------------------------
 Tue Nov  9 12:26:27 CET 2010 - ma@suse.de
 
 - Add /var/lib/up2date directory to filelist.

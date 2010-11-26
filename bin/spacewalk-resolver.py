@@ -24,6 +24,7 @@ import sys
 import os
 import re
 import logging
+import traceback
 sys.path.append("/usr/share/rhn/")
 from up2date_client import rhnChannel
 from up2date_client import up2dateAuth
