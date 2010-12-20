@@ -64,12 +64,13 @@ class SpacewalkResolverPlugin(Plugin):
             return
 
 
-        if not headers['channel']:
+        if not headers.has_key('channel'):
             self.answer("ERROR", {}, "Missing argument channel")
             return
 
 	details = rhnChannel.getChannelDetails();
 
+	self.channel = None
         for channel in details:
             if channel['label'] == headers['channel']:
                 self.channel = channel
