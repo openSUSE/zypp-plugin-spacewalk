@@ -1,0 +1,24 @@
+
+==Introduction
+
+This ZYpp plugin enables a SUSE based system to talk to a Spacewalk-compatible
+server.
+
+==Requirements
+
+libzypp 8.8.0 is required (which includes plugin support)
+
+==License
+
+Copyright (c) 2010 Novell, Inc.
+All Rights Reserved.
+
+Contains code from yum-rhn-plugin
+Copyright (c) 1999-2010 Red Hat, Inc.
+
+This program is free software; you can redistribute it and/or
+modify it under the terms of version 2 of the GNU General Public License as
+published by the Free Software Foundation.
+
+
+
