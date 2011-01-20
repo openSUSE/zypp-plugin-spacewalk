@@ -13,7 +13,7 @@
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.   See the
 # GNU General Public License for more details.
-# 
+#
 # You should have received a copy of the GNU General Public License
 # along with this program; if not, contact Novell, Inc.
 #
@@ -39,7 +39,7 @@ import xml.dom.minidom
 
 log = up2dateLog.initLog()
 
-# file used to keep track of the next time rhn_check 
+# file used to keep track of the next time rhn_check
 # is allowed to update the package list on the server
 LAST_UPDATE_FILE="/var/lib/up2date/dbtimestamp"
 
@@ -60,10 +60,13 @@ def __package_name_from_tup__(tup):
     Choose from the above styles to be compatible with yum.parsePackage
                                                     """
     n, v, r, e, a = tup[:]
-    if not e:
-        # set epoch to 0 as yum/zypper expects
-        e = '0'
-    pkginfo = '%s-%s-%s' % (n, v, r)
+    pkginfo = n
+    if e:
+        v = '%s:%s' % (e, v)
+    if v:
+	pkginfo = '%s-%s' % (pkginfo, v)
+    if r:
+	pkginfo = '%s-%s' % (pkginfo, r)
     return pkginfo
 
 class Zypper:
@@ -85,9 +88,9 @@ class Zypper:
         stdout_text, stderr_text = task.communicate()
         errors = []
         for error in self.__parse_output(stdout_text):
-            errors.append(error)            
+            errors.append(error)
         return (task.returncode, "\n".join(errors), {})
-        
+
     def install(self, package_list):
         args = ["-n", "-x", "install"]
         args.extend(package_list)
@@ -103,7 +106,7 @@ class Zypper:
         return self.__execute(args)
 
     def __transact_args__(self, transaction_data):
-        """ Add packages to transaction. 
+        """ Add packages to transaction.
             transaction_data is in format:
             { 'packages' : [
             [['name', '1.0.0', '1', '', ''], 'e'], ...
@@ -121,7 +124,7 @@ class Zypper:
         """
 
         args = ["-n", "-x", "install", "--"]
-                
+
         for pkgtup, action in transaction_data['packages']:
             if ((action == "u") or (action == "i") or (action == "r")):
                 args.append("+" + __package_name_from_tup__(pkgtup))
@@ -159,17 +162,17 @@ def update(package_list, cache_only=None):
     return zypper.install([__package_name_from_tup__(x) for x in package_list])
 
 def runTransaction(transaction_data, cache_only=None):
-    """ Run a transaction on a group of packages. 
+    """ Run a transaction on a group of packages.
         This was historicaly meant as generic call, but
-        is only called for rollback. 
-        Therefore we change all actions "i" (install) to 
+        is only called for rollback.
+        Therefore we change all actions "i" (install) to
         "r" (rollback) where we will not check dependencies and obsoletes.
     """
     if cache_only:
         return (0, "no-ops for caching", {})
     log.log_me("Called run transaction")
     zypper = Zypper()
-    return zypper.transact(transaction_data)    
+    return zypper.transact(transaction_data)
 
 def fullUpdate(force=0, cache_only=None):
     """ Update all packages on the system. """
@@ -204,7 +207,7 @@ def checkNeedUpdate(rhnsd=None, cache_only=None):
     if last >= (dbtime - 10):
         return (0, "rpm database not modified since last update (or package "
             "list recently updated)", data)
-    
+
     if last == 0:
         try:
             file = open(LAST_UPDATE_FILE, "w+")
@@ -215,7 +218,7 @@ def checkNeedUpdate(rhnsd=None, cache_only=None):
     # call the refresh_list action with a argument so we know it's
     # from rhnsd
     return refresh_list(rhnsd=1)
-   
+
 def refresh_list(rhnsd=None, cache_only=None):
     """ push again the list of rpm packages to the server """
     if cache_only:
@@ -231,7 +234,7 @@ def refresh_list(rhnsd=None, cache_only=None):
     touch_time_stamp()
     return (0, "rpmlist refreshed", {})
 
- 
+
 def touch_time_stamp():
     try:
         file_d = open(LAST_UPDATE_FILE, "w+")
@@ -256,9 +259,9 @@ def verify(packages, cache_only=None):
     data['name'] = "packages.verify"
     data['version'] = 0
     ret, missing_packages = rpmUtils.verifyPackages(packages)
-                                                                                
+
     data['verify_info'] = ret
-    
+
     if len(missing_packages):
         data['name'] = "packages.verify.missing_packages"
         data['version'] = 0
@@ -291,5 +294,5 @@ if __name__ == "__main__":
             [ ['bar', '2.0.0', '2', '', ''], 'i'] ]}
     zypper = Zypper()
     print zypper.__transact_args__(transaction)
-    
-    
+
+
