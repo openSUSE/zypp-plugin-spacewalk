@@ -5,10 +5,12 @@ Group:	 System Environment/Base
 License: GPLv2
 Summary: Client side Spacewalk integration for ZYpp
 Source0: zypp-plugin-spacewalk.tar.bz2
-BuildRequires: libzypp => 6.33.4
+BuildRequires: libzypp => 6.35.0
 BuildRequires: rhn-client-tools  >= 1.1.15
 BuildRequires: rhn-check
-Requires: libzypp >= 6.33.4
+# Actually needs just libzypp, but we also want zypper to
+# handle services correctly:
+Requires: zypper >= 1.3.12
 Requires: python
 Requires: rhn-client-tools >= 1.1.15
 Provides: zypp-service-plugin(spacewalk) = %{version}

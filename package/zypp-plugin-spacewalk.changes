@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed Jan 26 12:57:08 CET 2011 - ma@suse.de
+
+- Require a zypper version that correctly handles service refresh.
+  The plugin itself does not need zypper, but if you use the plugin
+  you also want your zypper to be in shape.
+
+-------------------------------------------------------------------
 Wed Jan 12 08:48:12 CET 2011 - ma@suse.de
 
 - Fix KeyErrors
