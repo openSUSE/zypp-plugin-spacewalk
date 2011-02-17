@@ -22,6 +22,13 @@
 #
 import sys
 import os
+
+# ma@suse.de: some modules seem to write debug output to stdout,
+# so we redirect it to stderr and use the original stdout for
+# sending back the result.
+sendback = sys.stdout
+sys.stdout = sys.stderr
+
 sys.path.append("/usr/share/rhn/")
 from up2date_client import rhnChannel
 from up2date_client import up2dateErrors
@@ -37,33 +44,33 @@ except:
 service_name = os.path.splitext(os.path.basename(sys.argv[0]))[0]
 print "# Channels for service %s" % service_name
 for channel in svrChannels:
-    print
+    print >>sendback
     if channel['name']:
-        print "# Name:        %s" % channel['name']
+        print >>sendback, "# Name:        %s" % channel['name']
     if channel['summary']:
-        print "# Summary:     %s" % channel['summary']
+        print >>sendback, "# Summary:     %s" % channel['summary']
     if channel['description']:
-        print "# Description:"
+        print >>sendback, "# Description:"
         for line in [line for line in channel['description'].split(os.linesep)]:
-            print "#   %s" % line
-        print "#"
+            print >>sendback, "#   %s" % line
+        print >>sendback, "#"
     if channel['type']:
-        print "# Type:         %s" % channel['type']
+        print >>sendback, "# Type:         %s" % channel['type']
     if channel['version']:
-        print "# Version:      %s" % channel['version']
+        print >>sendback, "# Version:      %s" % channel['version']
     if channel['arch']:
-        print "# Architecture: %s" % channel['arch']
+        print >>sendback, "# Architecture: %s" % channel['arch']
     if channel['gpg_key_url']:
-        print "# Gpg Key:      %s" % channel['gpg_key_url']
-    print "[%s]" % channel['label']
-    print "name=%s" % channel['name']
-    print "baseurl=plugin:spacewalk?channel=%s" % channel['label']
-    print "enabled=1"
-    print "autorefresh=1"
+        print >>sendback, "# Gpg Key:      %s" % channel['gpg_key_url']
+    print >>sendback, "[%s]" % channel['label']
+    print >>sendback, "name=%s" % channel['name']
+    print >>sendback, "baseurl=plugin:spacewalk?channel=%s" % channel['label']
+    print >>sendback, "enabled=1"
+    print >>sendback, "autorefresh=1"
     if channel['type']:
-        print "type=%s" % channel['type']
+        print >>sendback, "type=%s" % channel['type']
     if channel['gpg_key_url']:
-	print "gpgkey=%s" % channel['gpg_key_url']
+	print >>sendback, "gpgkey=%s" % channel['gpg_key_url']
     else:
-	print "gpgcheck=0"
+	print >>sendback, "gpgcheck=0"
 

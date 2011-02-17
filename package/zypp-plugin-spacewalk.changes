@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Feb 17 14:19:41 CET 2011 - ma@suse.de
+
+- Fix debug output from rhn_check disturbing zypper (bnc#672019)
+
+-------------------------------------------------------------------
 Wed Jan 26 12:57:08 CET 2011 - ma@suse.de
 
 - Require a zypper version that correctly handles service refresh.
