@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Mar  1 13:11:32 CET 2011 - ma@suse.de
+
+- Fix build requires
+
+-------------------------------------------------------------------
 Thu Feb 17 14:19:41 CET 2011 - ma@suse.de
 
 - Fix debug output from rhn_check disturbing zypper (bnc#672019)

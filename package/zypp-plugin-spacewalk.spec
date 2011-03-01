@@ -5,12 +5,17 @@ Group:	 System Environment/Base
 License: GPLv2
 Summary: Client side Spacewalk integration for ZYpp
 Source0: zypp-plugin-spacewalk.tar.bz2
-BuildRequires: libzypp => 6.35.0
-BuildRequires: rhn-client-tools  >= 1.1.15
-BuildRequires: rhn-check
 # Actually needs just libzypp, but we also want zypper to
 # handle services correctly:
+%if 0%{?suse_version} == 1110
+# on SLES11-SP1
+BuildRequires: libzypp => 6.35.0
 Requires: zypper >= 1.3.12
+%else
+# since 11.4
+BuildRequires: libzypp => 8.12.0
+Requires: zypper >= 1.5.3
+%fi
 Requires: python
 Requires: rhn-client-tools >= 1.1.15
 Provides: zypp-service-plugin(spacewalk) = %{version}
@@ -23,7 +28,6 @@ subscribed repositories as well as downloading packages from the
 a Spacewalk compatible server.
 
 %prep
-
 %setup -q -n zypp-plugin-spacewalk
 
 %build
@@ -50,13 +54,15 @@ a Spacewalk compatible server.
 %dir %{_prefix}/lib/zypp
 %dir %{_prefix}/lib/zypp/plugins
 %dir %{_prefix}/lib/zypp/plugins/services
+     %{_prefix}/lib/zypp/plugins/services/spacewalk
 %dir %{_prefix}/lib/zypp/plugins/system
+     %{_prefix}/lib/zypp/plugins/system/spacewalk
 %dir %{_prefix}/lib/zypp/plugins/urlresolver
+     %{_prefix}/lib/zypp/plugins/urlresolver/spacewalk
 %dir %{_datadir}/%{name}
 %dir %{_datadir}/%{name}/python
+     %{_datadir}/%{name}/python/plugins.py
+%dir %{_datadir}/rhn
+%dir %{_datadir}/rhn/actions
+     %{_datadir}/rhn/actions/packages.py
 %dir %{_var}/lib/up2date
-%{_datadir}/rhn/actions/packages.py
-%{_prefix}/lib/zypp/plugins/services/spacewalk
-%{_prefix}/lib/zypp/plugins/system/spacewalk
-%{_prefix}/lib/zypp/plugins/urlresolver/spacewalk
-%{_datadir}/%{name}/python/plugins.py
