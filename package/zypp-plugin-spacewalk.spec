@@ -15,7 +15,7 @@ Requires: zypper >= 1.3.12
 # since 11.4
 BuildRequires: libzypp => 8.12.0
 Requires: zypper >= 1.5.3
-%fi
+%endif
 Requires: python
 Requires: rhn-client-tools >= 1.1.15
 Provides: zypp-service-plugin(spacewalk) = %{version}
