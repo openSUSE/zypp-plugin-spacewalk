@@ -85,6 +85,9 @@ class SpacewalkResolverPlugin(Plugin):
 		self.auth_headers[k] = v
 	#self.answer("META", li)
 
+	# url might be a list type, we use the 1st one
+	if type(self.channel['url']) == type([]):
+	    self.channel['url'] = self.channel['url'][0]
         url = "%s/GET-REQ/%s?head_requests=no" % (self.channel['url'], self.channel['label'])
 
         self.answer("RESOLVEDURL", self.auth_headers, url)
