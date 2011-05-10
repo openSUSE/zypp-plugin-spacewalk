@@ -9,7 +9,7 @@ Source0: zypp-plugin-spacewalk.tar.bz2
 # handle services correctly:
 %if 0%{?suse_version} == 1010
 # on SLES10-SP3
-BuildRequires: libzypp => 2.100.8
+BuildRequires: libzypp => 2.101.0
 Requires: zypper >= 0.6.202
 %else
 %if 0%{?suse_version} == 1110
