@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue May 31 13:55:55 CEST 2011 - dmacvicar@suse.de
+
+- add python-xml as requirement (for minidom)
+
+-------------------------------------------------------------------
 Wed Apr 27 12:20:46 CEST 2011 - ma@suse.de
 
 - Fix build requires on SLE10
