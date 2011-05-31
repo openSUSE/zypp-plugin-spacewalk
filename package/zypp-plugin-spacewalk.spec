@@ -22,7 +22,7 @@ BuildRequires: libzypp => 8.12.0
 Requires: zypper >= 1.5.3
 %endif
 %endif
-Requires: python
+Requires: python python-xml
 Requires: rhn-client-tools >= 1.1.15
 Provides: zypp-service-plugin(spacewalk) = %{version}
 Provides: zypp-media-plugin(spacewalk) = %{version}
