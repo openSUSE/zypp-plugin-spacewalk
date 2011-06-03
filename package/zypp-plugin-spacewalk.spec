@@ -1,5 +1,5 @@
 Name:    zypp-plugin-spacewalk
-Version: 0.1
+Version: 0.2
 Release: 0
 Group:	 System Environment/Base
 License: GPLv2
@@ -22,7 +22,15 @@ BuildRequires: libzypp => 8.12.0
 Requires: zypper >= 1.5.3
 %endif
 %endif
-Requires: python python-xml
+Requires: python-xml
+
+# NOTE: zypp-plugin-python should become a seaparte package
+# one day. By now we provide the name and install the plugin
+# module in %{py_sitedir} too.
+Requires:	python
+BuildRequires:	python-devel
+Provides:	zypp-plugin-python = %{version}
+
 Requires: rhn-client-tools >= 1.1.15
 Provides: zypp-service-plugin(spacewalk) = %{version}
 Provides: zypp-media-plugin(spacewalk) = %{version}
@@ -55,6 +63,12 @@ a Spacewalk compatible server.
 
 %{__mkdir_p} %{buildroot}%{_var}/lib/up2date
 
+# NOTE: zypp-plugin-python should become a seaparte package
+# one day. By now we provide the name and install the plugin
+# module in %{py_sitedir} too.
+%{__mkdir_p} %{buildroot}%{py_sitedir}
+%{__install} python/zypp/plugins.py %{buildroot}%{py_sitedir}/zypp_plugin.py
+
 %files
 %defattr(-,root,root)
 %dir %{_prefix}/lib/zypp
@@ -72,3 +86,4 @@ a Spacewalk compatible server.
 %dir %{_datadir}/rhn/actions
      %{_datadir}/rhn/actions/packages.py
 %dir %{_var}/lib/up2date
+%{py_sitedir}/zypp_plugin.py
