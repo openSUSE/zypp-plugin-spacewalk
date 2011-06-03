@@ -35,11 +35,14 @@ from up2date_client import up2dateErrors
 
 try:
     svrChannels = rhnChannel.getChannelDetails()
+except up2dateErrors.NoSystemIdError, e:
+    sys.stderr.write("%s\n" % e)
+    sys.exit(42)
 except up2dateErrors.Error, e:
     sys.stderr.write("%s\n" % e)
-    exit(1)
+    sys.exit(1)
 except:
-    exit(1)
+    sys.exit(1)
 
 service_name = os.path.splitext(os.path.basename(sys.argv[0]))[0]
 print "# Channels for service %s" % service_name
