@@ -1,4 +1,15 @@
 -------------------------------------------------------------------
+Fri Jun  3 16:41:11 CEST 2011 - ma@suse.de
+
+- Provide zypp-plugin-python, which should become a standalone
+  package providing the python Plugin base class.
+- python Plugin: Redirect stdin to stderr to prevent modules from
+  sending garbage back to libzypp. Return _ENOMETHOD if some message
+  handler is not implemented by the plugin. Close stdin and leave the
+  main loop when receiving a _DISCONNECT message.
+- version 0.2
+
+-------------------------------------------------------------------
 Tue May 31 13:55:55 CEST 2011 - dmacvicar@suse.de
 
 - add python-xml as requirement (for minidom)
