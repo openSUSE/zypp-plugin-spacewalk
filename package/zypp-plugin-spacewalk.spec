@@ -8,7 +8,7 @@ Source0: zypp-plugin-spacewalk.tar.bz2
 # Actually needs just libzypp, but we also want zypper to
 # handle services correctly:
 %if 0%{?suse_version} == 1010
-# on SLES10 require basic coae10->11 metadata conversion tools
+# on SLES10 require basic code10->11 metadata conversion tools
 Requires: libzypp(code10)
 %endif
 %if 0%{?suse_version} == 1110 || 0%{?suse_version} == 1010
