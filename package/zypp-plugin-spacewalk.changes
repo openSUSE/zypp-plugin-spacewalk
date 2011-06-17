@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Jun 17 19:16:58 CEST 2011 - ma@suse.de
+
+- On SLE10 require libzypp basic code10->11 metadata conversion tools.
+
+-------------------------------------------------------------------
 Fri Jun  3 16:41:11 CEST 2011 - ma@suse.de
 
 - Provide zypp-plugin-python, which should become a standalone
