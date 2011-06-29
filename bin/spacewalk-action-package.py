@@ -122,6 +122,20 @@ class Zypper:
             Rollback do not check anything and will assume that state
             to which we are rolling back should be correct.
         """
+    def patch_install(self, patch_list):
+        args = ["-n", "-x", "install"]
+        patches = ["patch:%s" % i for i in patch_list]
+        args.extend(patches)
+        response = self.__execute(args)
+        if response[0] == 102:
+            # zypper returns a status code as the first element of the
+            # tuple. 102 is a status code that suggests a reboot. We
+            # intercept that and return a 0 status which is the only
+            # "successful" status
+            message =  ("This system requires a reboot in order for the update "
+                        "to take effect.\n") + response[1]
+            response = (0, message, response[2])
+        return response
 
         args = ["-n", "-x", "install", "--"]
 
@@ -160,6 +174,11 @@ def update(package_list, cache_only=None):
     log.log_me("Called update", package_list)
     zypper = Zypper()
     return zypper.install([__package_name_from_tup__(x) for x in package_list])
+def patch_install(patch_list):
+    log.log_me("Called patch install", patch_list)
+
+    zypper = Zypper()
+    return zypper.patch_install(patch_list)
 
 def runTransaction(transaction_data, cache_only=None):
     """ Run a transaction on a group of packages.

@@ -59,6 +59,7 @@ a Spacewalk compatible server.
 
 %{__mkdir_p} %{buildroot}%{_datadir}/rhn/actions
 %{__install} bin/spacewalk-action-package.py %{buildroot}%{_datadir}/rhn/actions/packages.py
+%{__install} bin/spacewalk-action-errata.py %{buildroot}%{_datadir}/rhn/actions/errata.py
 
 %{__mkdir_p} %{buildroot}%{_var}/lib/up2date
 
