@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Wed Jun 29 15:42:59 CEST 2011 - iartarisi@suse.cz
+
+- install patches using 'zypper install patch:'
+
+-------------------------------------------------------------------
 Fri Jun 17 19:16:58 CEST 2011 - ma@suse.de
 
 - On SLE10 require libzypp basic code10->11 metadata conversion tools.
