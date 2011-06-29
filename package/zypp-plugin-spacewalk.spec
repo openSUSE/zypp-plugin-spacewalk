@@ -85,5 +85,6 @@ a Spacewalk compatible server.
 %dir %{_datadir}/rhn
 %dir %{_datadir}/rhn/actions
      %{_datadir}/rhn/actions/packages.py
+     %{_datadir}/rhn/actions/errata.py
 %dir %{_var}/lib/up2date
 %{py_sitedir}/zypp_plugin.py
