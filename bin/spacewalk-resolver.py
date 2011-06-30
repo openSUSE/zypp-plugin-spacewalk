@@ -32,11 +32,9 @@ from up2date_client import up2dateErrors
 
 # for testing add the relative path to the load path
 if "spacewalk-resolver.py" in sys.argv[0]:
-    sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '../python/zypp'))
-else:
-    sys.path.insert(0, "/usr/share/zypp-plugin-spacewalk/python")
+    sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '../python'))
 
-from plugins import Plugin
+from zypp_plugin import Plugin
 
 class SpacewalkResolverPlugin(Plugin):
 

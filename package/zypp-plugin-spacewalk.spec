@@ -1,5 +1,5 @@
 Name:    zypp-plugin-spacewalk
-Version: 0.2
+Version: 0.3
 Release: 0
 Group:	 System Environment/Base
 License: GPLv2
@@ -28,7 +28,7 @@ Requires: python-xml
 # module in %{py_sitedir} too.
 Requires:	python
 BuildRequires:	python-devel
-Provides:	zypp-plugin-python = %{version}
+Requires:	zypp-plugin-python = %{version}
 
 Requires: rhn-client-tools >= 1.1.15
 Provides: zypp-service-plugin(spacewalk) = %{version}
@@ -39,6 +39,14 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 This plugin allows a ZYpp powered Linux system to see Spacewalk
 subscribed repositories as well as downloading packages from the
 a Spacewalk compatible server.
+
+%package -n zypp-plugin-python
+Url:        http://doc.opensuse.org/projects/libzypp/HEAD/zypp-plugins.html
+Summary:    Helper that makes writing ZYpp plugins in pythin easier
+Group:      System/Packages
+%description -n zypp-plugin-python
+This API allows writing ZYpp plugins by just subclassing from a python class
+and implementing the commands you want to respond to as python methods.
 
 %prep
 %setup -q -n zypp-plugin-spacewalk
@@ -54,20 +62,15 @@ a Spacewalk compatible server.
 %{__install} bin/spacewalk-system.py %{buildroot}%{_prefix}/lib/zypp/plugins/system/spacewalk
 %{__install} bin/spacewalk-resolver.py %{buildroot}%{_prefix}/lib/zypp/plugins/urlresolver/spacewalk
 
-%{__mkdir_p} %{buildroot}%{_datadir}/%{name}/python
-%{__install} python/zypp/plugins.py %{buildroot}%{_datadir}/%{name}/python
-
 %{__mkdir_p} %{buildroot}%{_datadir}/rhn/actions
 %{__install} bin/spacewalk-action-package.py %{buildroot}%{_datadir}/rhn/actions/packages.py
 %{__install} bin/spacewalk-action-errata.py %{buildroot}%{_datadir}/rhn/actions/errata.py
 
 %{__mkdir_p} %{buildroot}%{_var}/lib/up2date
 
-# NOTE: zypp-plugin-python should become a seaparte package
-# one day. By now we provide the name and install the plugin
-# module in %{py_sitedir} too.
+# For zypp-plugin-python package
 %{__mkdir_p} %{buildroot}%{py_sitedir}
-%{__install} python/zypp/plugins.py %{buildroot}%{py_sitedir}/zypp_plugin.py
+%{__install} python/zypp_plugin.py %{buildroot}%{py_sitedir}/zypp_plugin.py
 
 %files
 %defattr(-,root,root)
@@ -79,12 +82,14 @@ a Spacewalk compatible server.
      %{_prefix}/lib/zypp/plugins/system/spacewalk
 %dir %{_prefix}/lib/zypp/plugins/urlresolver
      %{_prefix}/lib/zypp/plugins/urlresolver/spacewalk
-%dir %{_datadir}/%{name}
-%dir %{_datadir}/%{name}/python
-     %{_datadir}/%{name}/python/plugins.py
 %dir %{_datadir}/rhn
 %dir %{_datadir}/rhn/actions
      %{_datadir}/rhn/actions/packages.py
      %{_datadir}/rhn/actions/errata.py
 %dir %{_var}/lib/up2date
+
+%files -n zypp-plugin-python
+%defattr(-,root,root)
 %{py_sitedir}/zypp_plugin.py
+
+
