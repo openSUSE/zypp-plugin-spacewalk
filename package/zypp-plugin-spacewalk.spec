@@ -42,7 +42,7 @@ a Spacewalk compatible server.
 
 %package -n zypp-plugin-python
 Url:        http://doc.opensuse.org/projects/libzypp/HEAD/zypp-plugins.html
-Summary:    Helper that makes writing ZYpp plugins in pythin easier
+Summary:    Helper that makes writing ZYpp plugins in python easier
 Group:      System/Packages
 %description -n zypp-plugin-python
 This API allows writing ZYpp plugins by just subclassing from a python class
