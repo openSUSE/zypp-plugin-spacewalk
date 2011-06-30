@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu Jun 30 10:40:57 UTC 2011 - dmacvicar@suse.de
+
+- split zypp-plugin-python as a subpackage so
+  that it can be used in other zypp plugins like snapper
+- version 0.3
+
+-------------------------------------------------------------------
 Wed Jun 29 15:42:59 CEST 2011 - iartarisi@suse.cz
 
 - install patches using 'zypper install patch:'
