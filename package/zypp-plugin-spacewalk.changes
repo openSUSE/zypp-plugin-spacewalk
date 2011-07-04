@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Jul  4 18:37:12 CEST 2011 - ma@suse.de
+
+- Fix wrong import paths for import Plugin.
+- Remove zypp-plugin from specfile (stand alone package now).
+- version 0.4
+
+-------------------------------------------------------------------
 Thu Jun 30 10:40:57 UTC 2011 - dmacvicar@suse.de
 
 - split zypp-plugin-python as a subpackage so
