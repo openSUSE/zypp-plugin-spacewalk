@@ -33,7 +33,7 @@ if "spacewalk-system.py" in sys.argv[0]:
 else:
   sys.path.insert(0, "/usr/share/zypp-plugin-spacewalk/python")
 
-from plugins import Plugin
+from zypp_plugin import Plugin
 from up2date_client import rhnPackageInfo
 
 class SpacewalkSystemPlugin(Plugin):
