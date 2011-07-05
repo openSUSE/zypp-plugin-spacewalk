@@ -15,7 +15,7 @@ Thu Jun 30 10:40:57 UTC 2011 - dmacvicar@suse.de
 -------------------------------------------------------------------
 Wed Jun 29 15:42:59 CEST 2011 - iartarisi@suse.cz
 
-- install patches using 'zypper install patch:'
+- install patches using 'zypper install patch:' (bnc#692928)
 
 -------------------------------------------------------------------
 Fri Jun 17 19:16:58 CEST 2011 - ma@suse.de
