@@ -48,6 +48,7 @@ def old_update(errataidlist, cache_only=None):
     # deprecated and error prone on zypper systems because patches are
     # supposed to be installed by themselves, rather than installing the
     # component packages
+    packagelist = []
     for errataid in errataidlist:
         tmpList = __getErrataInfo(errataid)
         packagelist = packagelist + tmpList
@@ -95,7 +96,6 @@ def old_update(errataidlist, cache_only=None):
     return packages.update(packagelist, cache_only)
 
 def update(errataidlist, cache_only=None):
-    packagelist = []
 
     if type(errataidlist) not in [type([]), type(())]:
         errataidlist = [ errataidlist ]
