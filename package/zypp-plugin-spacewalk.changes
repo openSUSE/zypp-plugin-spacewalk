@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Thu Jul  7 10:03:43 CEST 2011 - ma@suse.de
+
+- Catch client not being registered or spacewalk-backend-libs missing.
+
+-------------------------------------------------------------------
 Wed Jul  6 17:14:56 CEST 2011 - mc@suse.de
 
 - fix wrong variable initialization
