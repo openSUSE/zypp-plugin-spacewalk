@@ -22,6 +22,11 @@
 #
 import sys
 import os
+import traceback
+
+if not os.path.exists("/etc/sysconfig/rhn/systemid"):
+    sys.stderr.write("This client is not registered to any spacewalk server.\n")
+    sys.exit(1)
 
 # ma@suse.de: some modules seem to write debug output to stdout,
 # so we redirect it to stderr and use the original stdout for
@@ -29,9 +34,13 @@ import os
 sendback = sys.stdout
 sys.stdout = sys.stderr
 
-sys.path.append("/usr/share/rhn/")
-from up2date_client import rhnChannel
-from up2date_client import up2dateErrors
+try:
+    sys.path.append("/usr/share/rhn/")
+    from up2date_client import rhnChannel
+    from up2date_client import up2dateErrors
+except:
+    sys.stderr.write("%sPlease install package spacewalk-backend-libs.\n" % traceback.format_exc())
+    sys.exit(1)
 
 try:
     svrChannels = rhnChannel.getChannelDetails()
