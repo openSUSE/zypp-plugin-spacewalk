@@ -137,17 +137,6 @@ class Zypper:
             response = (0, message, response[2])
         return response
 
-        args = ["-n", "-x", "install", "--"]
-
-        for pkgtup, action in transaction_data['packages']:
-            if ((action == "u") or (action == "i") or (action == "r")):
-                args.append("+" + __package_name_from_tup__(pkgtup))
-            elif action == 'e':
-                args.append("-" + __package_name_from_tup__(pkgtup))
-            else:
-                assert False, "Unknown package transaction action."
-        return args
-
     def transact(self, transaction_data):
         args = self.__transact_args__(transaction_data)
         return self.__execute(args)
