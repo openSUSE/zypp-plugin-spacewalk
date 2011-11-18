@@ -122,6 +122,17 @@ class Zypper:
             Rollback do not check anything and will assume that state
             to which we are rolling back should be correct.
         """
+        args = ["-n", "-x", "install", "--"]
+
+        for pkgtup, action in transaction_data['packages']:
+            if ((action == "u") or (action == "i") or (action == "r")):
+                args.append("+" + __package_name_from_tup__(pkgtup))
+            elif action == 'e':
+                args.append("-" + __package_name_from_tup__(pkgtup))
+            else:
+                assert False, "Unknown package transaction action."
+        return args
+
     def patch_install(self, patch_list):
         args = ["-n", "-x", "install"]
         patches = ["patch:%s" % i for i in patch_list]
