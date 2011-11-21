@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Mon Nov 21 13:53:48 CET 2011 - ma@suse.de
+
+- Fix bug in spacewalk-action-package breaking spacewalk synchronize 
+  profile. (bnc#731714)
+- version 0.5
+
+-------------------------------------------------------------------
 Thu Jul  7 10:03:43 CEST 2011 - ma@suse.de
 
 - Catch client not being registered or spacewalk-backend-libs missing.
