@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Jan 30 13:02:22 CET 2012 - ma@suse.de
+
+- Code10: Provide 'zmd' to aid products requiring this in their 
+  release package. (bnc#743955)
+
+-------------------------------------------------------------------
 Mon Nov 21 13:53:48 CET 2011 - ma@suse.de
 
 - Fix bug in spacewalk-action-package breaking spacewalk synchronize 
