@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Apr  3 11:06:06 CEST 2012 - ma@suse.de
+
+- Use versioned provides for zmd hack (bnc#743955)
+
+-------------------------------------------------------------------
 Mon Jan 30 13:02:22 CET 2012 - ma@suse.de
 
 - Code10: Provide 'zmd' to aid products requiring this in their 
