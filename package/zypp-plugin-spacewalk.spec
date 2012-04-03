@@ -12,7 +12,7 @@ Source0:	zypp-plugin-spacewalk.tar.bz2
 Requires:	libzypp(code10)
 # esp. for OES we need to provide zmd as it's required by the
 # products -release package. :(
-Provides:	zmd
+Provides:	zmd <= 7.3.0.0
 %endif
 %if 0%{?suse_version} == 1110 || 0%{?suse_version} == 1010
 # on SLES11-SP1
