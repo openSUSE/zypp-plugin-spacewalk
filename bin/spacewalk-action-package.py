@@ -105,6 +105,19 @@ class Zypper:
         args = ["-n", "-x", "update"]
         return self.__execute(args)
 
+    def patch(self):
+        args = ["-n", "-x", "patch"]
+        return self.__execute(args)
+
+    def dup(self, channel_names=None):
+        args = ["-n", "-x", "dup"]
+        if channel_names and type(channel_names) == type([]):
+            for name in channel_names:
+                args.append("--from")
+                args.append("spacewalk:%s" % name)
+        return self.__execute(args)
+
+
     def __transact_args__(self, transaction_data):
         """ Add packages to transaction.
             transaction_data is in format:
@@ -174,6 +187,7 @@ def update(package_list, cache_only=None):
     log.log_me("Called update", package_list)
     zypper = Zypper()
     return zypper.install([__package_name_from_tup__(x) for x in package_list])
+
 def patch_install(patch_list):
     log.log_me("Called patch install", patch_list)
 
