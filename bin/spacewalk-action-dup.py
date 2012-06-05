@@ -32,7 +32,7 @@ from actions.packages import Zypper
 log = up2dateLog.initLog()
 
 __rhnexport__ = [
-    'dup']
+    'upgrade']
 
 # action version we understand
 ACTION_VERSION = 2
@@ -80,7 +80,7 @@ def _change_product(params):
             ret = 1
     return ret
 
-def dup(params, cache_only=None):
+def upgrade(params, cache_only=None):
     """Perform a dist upgrade
 
     params: has to be a dict support the following keys
