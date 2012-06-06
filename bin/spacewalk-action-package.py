@@ -109,8 +109,10 @@ class Zypper:
         args = ["-n", "-x", "patch"]
         return self.__execute(args)
 
-    def dup(self, channel_names=None):
+    def dup(self, channel_names=None, dry_run=False):
         args = ["-n", "-x", "dup"]
+        if dry_run:
+            args.append("--dry-run")
         if channel_names and type(channel_names) == type([]):
             for name in channel_names:
                 args.append("--from")

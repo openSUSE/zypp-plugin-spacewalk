@@ -92,8 +92,11 @@ def upgrade(params, cache_only=None):
             parameter does not exist, a simple 'zypper dup'
             is executed.
 
-            'full_update: True|False
+            'full_update': True|False
             If True, perform a 'zypper patch' after the dist upgrade
+
+            'dry_run': True|False
+            run without changing the system
 
             'change_product': True|False
             Some migrations require a manual change of the products.
@@ -115,6 +118,7 @@ def upgrade(params, cache_only=None):
             If the option 'delete' is True, the product will be removed
             instead of changed.
     """
+    dry_run = False
     if type(params) != type({}):
         return (13, "Invalid arguments passed to function", {})
 
@@ -125,11 +129,16 @@ def upgrade(params, cache_only=None):
     if params.has_key('dup_channel_names') and type(params['dup_channel_names']) == type([]):
         dup_channel_names = params['dup_channel_names']
 
+    if params.has_key('dry_run') and params['dry_run']:
+        dry_run = True
+
     zypper = Zypper()
     log.log_me("Called dist upgrade ", dup_channel_names)
-    (status, message, data) = zypper.dup(dup_channel_names)
-    if not status or not (params.has_key('full_update') and params['full_update']):
-        return (status, message, data)
+    (status, message, data) = zypper.dup(dup_channel_names, dry_run=dry_run)
+    if (not status or dry_run or
+        not (params.has_key('full_update') and params['full_update']) ):
+            # stop here on error, dry_run or if only minimal update is requested
+            return (status, message, data)
 
     log.log_me("Called install all patches")
     (pstat, pmsg, pdata) = zypper.patch()
