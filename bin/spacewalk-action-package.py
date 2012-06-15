@@ -81,7 +81,7 @@ class Zypper:
             yield message.firstChild.nodeValue
 
     def __execute(self, args):
-        cmd = ["zypper"]
+        cmd = ["LANG=C", "zypper"]
         cmd.extend(args)
         log.log_me("Executing: %s" % cmd)
         task = subprocess.Popen(' '.join(cmd), shell=True, stdout=subprocess.PIPE)
