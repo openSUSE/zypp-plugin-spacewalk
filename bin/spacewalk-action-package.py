@@ -79,6 +79,13 @@ class Zypper:
         messages = dom.getElementsByTagName("message")
         for message in messages:
             yield message.firstChild.nodeValue
+        for task in ['upgrade', 'install', 'downgrade', 'remove', 'change-vendor']:
+            tasknodes = dom.getElementsByTagName("to-%s" % task)
+            num = 0
+            for node in tasknodes:
+                solvables = node.getElementsByTagName('solvable')
+                num = num + solvables.length
+            yield "Package to %s: %s" % (task, num)
 
     def __execute(self, args):
         cmd = ["LANG=C", "zypper"]
