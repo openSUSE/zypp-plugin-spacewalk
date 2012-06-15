@@ -100,8 +100,8 @@ class Zypper:
         rettext = "\n".join(errors)
         if len(rettext) > 1023:
             textstart = rettext[:200]
-            textend = rettext[810:]
-            rettext = "%s\n[...]\n%s" % (textstart,textend)
+            textend = rettext[-800:]
+            rettext = "%s\n[...]\n%s" % (textstart, textend)
         return (task.returncode, rettext, {})
 
     def install(self, package_list):
