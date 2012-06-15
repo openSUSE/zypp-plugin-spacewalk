@@ -119,6 +119,7 @@ def upgrade(params, cache_only=None):
             instead of changed.
     """
     dry_run = False
+    full_update = False
     if type(params) != type({}):
         return (13, "Invalid arguments passed to function", {})
 
@@ -132,13 +133,15 @@ def upgrade(params, cache_only=None):
     if params.has_key('dry_run') and params['dry_run']:
         dry_run = True
 
+    if params.has_key('full_update') and params['full_update']:
+        full_update = True
+
     zypper = Zypper()
     log.log_me("Called dist upgrade ", dup_channel_names)
     (status, message, data) = zypper.dup(dup_channel_names, dry_run=dry_run)
-    if (not status or dry_run or
-        not (params.has_key('full_update') and params['full_update']) ):
-            # stop here on error, dry_run or if only minimal update is requested
-            return (status, message, data)
+    if (status > 0 or dry_run or not full_update):
+        # stop here on error, dry_run or if only minimal update is requested
+        return (status, message, data)
 
     log.log_me("Called install all patches")
     (pstat, pmsg, pdata) = zypper.patch()
