@@ -86,10 +86,16 @@ class Zypper:
         log.log_me("Executing: %s" % cmd)
         task = subprocess.Popen(' '.join(cmd), shell=True, stdout=subprocess.PIPE)
         stdout_text, stderr_text = task.communicate()
-        errors = []
+        errors = ['<pre>']
         for error in self.__parse_output(stdout_text):
             errors.append(error)
-        return (task.returncode, "\n".join(errors), {})
+        errors.append('</pre>')
+        rettext = "\n".join(errors)
+        if len(rettext) > 1023:
+            textstart = rettext[:200]
+            textend = rettext[810:]
+            rettext = "%s\n[...]\n%s" % (textstart,textend)
+        return (task.returncode, rettext, {})
 
     def install(self, package_list):
         args = ["-n", "-x", "install"]
