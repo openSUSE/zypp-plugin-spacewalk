@@ -37,6 +37,15 @@ __rhnexport__ = [
 # action version we understand
 ACTION_VERSION = 2
 
+def __strip_message(code, message, response):
+        """reduce text to maximal 1008 characters"""
+        message = '<pre>' + message + '</pre>'
+        if len(message) > 1008:
+            textstart = message[:200]
+            textend = message[-800:]
+            message = "%s\n[...]\n%s" % (textstart, textend)
+        return (code, message, response)
+
 def _change_product(params):
     """Change the product info in /etc/products.d manually"""
     if not params.has_key('products') or not params['products']:
@@ -138,21 +147,6 @@ def upgrade(params, cache_only=None):
 
     zypper = Zypper()
     log.log_me("Called dist upgrade ", dup_channel_names)
-    (status, message, data) = zypper.dup(dup_channel_names, dry_run=dry_run)
-    if (status > 0 or dry_run or not full_update):
-        # stop here on error, dry_run or if only minimal update is requested
-        return (status, message, data)
-
-    log.log_me("Called install all patches")
-    (pstat, pmsg, pdata) = zypper.patch()
-    if str(pstat) == '103':
-        # 103 - ZYPPER_EXIT_INF_RESTART_NEEDED
-        # a package manager update was installed and there maybe
-        # more updates available. Run zypper.patch again
-        (pstat, pmsg, pdata) = zypper.patch()
-    # after a successfull dup, this action is successfull completed
-    # even if zypper.patch() failed. Failed patch installations
-    # can be fixed later using normal errata action. No need to
-    # rollback the channels which would mess up the system
-    return (status, message, data)
+    (status, message, data) = zypper.distupgrade(channel_names=dup_channel_names, dry_run=dry_run, run_patch=full_update)
+    return __strip_message(status, message, data)
 
