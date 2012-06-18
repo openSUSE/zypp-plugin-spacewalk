@@ -36,6 +36,7 @@ from up2date_client import rhnPackageInfo
 
 import subprocess
 import xml.dom.minidom
+from xml.dom import Node
 
 log = up2dateLog.initLog()
 
@@ -76,12 +77,29 @@ class Zypper:
     def __parse_output(self, output):
         log.log_me(output)
         dom = xml.dom.minidom.parseString(output)
-        messages = dom.getElementsByTagName("message")
-        for message in messages:
-            yield message.firstChild.nodeValue
+        childs = dom.documentElement.childNodes
+        for child in childs:
+            if child.nodeType != Node.ELEMENT_NODE:
+                continue
+
+            if child.tagName == "message":
+                yield child.firstChild.nodeValue
+            elif child.tagName == "prompt":
+                descrs = child.getElementsByTagName('description')
+                for d in descrs:
+                    yield d.firstChild.nodeValue
+            elif child.tagName == "install-summary":
+                for task in ['upgrade', 'install', 'downgrade', 'remove', 'change-vendor']:
+                    tasknodes = child.getElementsByTagName("to-%s" % task)
+                    num = 0
+                    for node in tasknodes:
+                        solvables = node.getElementsByTagName('solvable')
+                        num = num + len(solvables)
+                    if num > 0:
+                        yield "%s: %s" % (task, num)
 
     def __execute(self, args):
-        cmd = ["zypper"]
+        cmd = ["LANG=C", "zypper"]
         cmd.extend(args)
         log.log_me("Executing: %s" % cmd)
         task = subprocess.Popen(' '.join(cmd), shell=True, stdout=subprocess.PIPE)
@@ -89,7 +107,8 @@ class Zypper:
         errors = []
         for error in self.__parse_output(stdout_text):
             errors.append(error)
-        return (task.returncode, "\n".join(errors), {})
+        rettext = "\n".join(errors)
+        return (task.returncode, rettext, {})
 
     def install(self, package_list):
         args = ["-n", "-x", "install"]
@@ -104,6 +123,39 @@ class Zypper:
     def update(self):
         args = ["-n", "-x", "update"]
         return self.__execute(args)
+
+    def patch(self):
+        args = ["-n", "-x", "patch"]
+        return self.__execute(args)
+
+    def dup(self, channel_names=None, dry_run=False):
+        args = ["-n", "-x", "dup"]
+        if dry_run:
+            args.append("--dry-run")
+        if channel_names and type(channel_names) == type([]):
+            for name in channel_names:
+                args.append("--from")
+                args.append("spacewalk:%s" % name)
+        return self.__execute(args)
+
+    def distupgrade(self, channel_names=None, dry_run=False, run_patch=True):
+        (status, message, data) = self.dup(channel_names, dry_run)
+        if dry_run or (status > 0 and status < 100) or not run_patch:
+            return (status, message, data)
+        (pstat, pmsg, pdata) = self.patch()
+        if str(pstat) == '103':
+            # 103 - ZYPPER_EXIT_INF_RESTART_NEEDED
+            # a package manager update was installed and there maybe
+            # more updates available. Run zypper.patch again
+            (pstat, pmsg, pdata) = zypper.patch()
+        # after a successfull dup, this action is successfull completed
+        # even if zypper.patch() failed. Failed patch installations
+        # can be fixed later using normal errata action. No need to
+        # rollback the channels, which would mess up the system.
+        # But we write a note about it in the message
+        if pstat > 0:
+            message = message + '\nFinal patch call failed. Please install patches manually.'
+        return (status, message, data)
 
     def __transact_args__(self, transaction_data):
         """ Add packages to transaction.
@@ -152,6 +204,16 @@ class Zypper:
         args = self.__transact_args__(transaction_data)
         return self.__execute(args)
 
+def __strip_message(tup):
+        """reduce text to maximal 1008 characters"""
+        (code, message, response) = tup[:]
+        message = '<pre>' + message + '</pre>'
+        if len(message) > 1008:
+            textstart = message[:200]
+            textend = message[-800:]
+            message = "%s\n[...]\n%s" % (textstart, textend)
+        return (code, message, response)
+
 def remove(package_list, cache_only=None):
     """We have been told that we should remove packages"""
     if cache_only:
@@ -164,7 +226,7 @@ def remove(package_list, cache_only=None):
 
     log.log_debug("Called remove", package_list)
     zypper = Zypper()
-    return zypper.remove([__package_name_from_tup__(x) for x in package_list])
+    return __strip_message(zypper.remove([__package_name_from_tup__(x) for x in package_list]))
 
 def update(package_list, cache_only=None):
     """We have been told that we should retrieve/install packages"""
@@ -173,12 +235,13 @@ def update(package_list, cache_only=None):
 
     log.log_me("Called update", package_list)
     zypper = Zypper()
-    return zypper.install([__package_name_from_tup__(x) for x in package_list])
+    return __strip_message(zypper.install([__package_name_from_tup__(x) for x in package_list]))
+
 def patch_install(patch_list):
     log.log_me("Called patch install", patch_list)
 
     zypper = Zypper()
-    return zypper.patch_install(patch_list)
+    return __strip_message(zypper.patch_install(patch_list))
 
 def runTransaction(transaction_data, cache_only=None):
     """ Run a transaction on a group of packages.
@@ -191,12 +254,12 @@ def runTransaction(transaction_data, cache_only=None):
         return (0, "no-ops for caching", {})
     log.log_me("Called run transaction")
     zypper = Zypper()
-    return zypper.transact(transaction_data)
+    return __strip_message(zypper.transact(transaction_data))
 
 def fullUpdate(force=0, cache_only=None):
     """ Update all packages on the system. """
     zypper = Zypper()
-    return zypper.update()
+    return __strip_message(zypper.update())
 
 def checkNeedUpdate(rhnsd=None, cache_only=None):
     """ Check if the locally installed package list changed, if
@@ -236,7 +299,7 @@ def checkNeedUpdate(rhnsd=None, cache_only=None):
 
     # call the refresh_list action with a argument so we know it's
     # from rhnsd
-    return refresh_list(rhnsd=1)
+    return __strip_message(refresh_list(rhnsd=1))
 
 def refresh_list(rhnsd=None, cache_only=None):
     """ push again the list of rpm packages to the server """
