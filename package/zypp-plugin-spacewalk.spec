@@ -60,7 +60,7 @@ a Spacewalk compatible server.
 %{__install} bin/spacewalk-action-errata.py %{buildroot}%{_datadir}/rhn/actions/errata.py
 %{__install} bin/spacewalk-action-distupgrade.py %{buildroot}%{_datadir}/rhn/actions/distupgrade.py
 
-%{__install} distupgrade %{buildroot}%{_sysconfdir}/sysconfig/rhn/clientCaps.d/
+%{__install} -m 0644 distupgrade %{buildroot}%{_sysconfdir}/sysconfig/rhn/clientCaps.d/
 
 %{__mkdir_p} %{buildroot}%{_var}/lib/up2date
 
