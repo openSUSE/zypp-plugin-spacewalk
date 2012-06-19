@@ -82,5 +82,5 @@ a Spacewalk compatible server.
 %dir %{_var}/lib/up2date
 %dir %{_sysconfdir}/sysconfig/rhn
 %dir %{_sysconfdir}/sysconfig/rhn/clientCaps.d
-     %{_sysconfdir}/sysconfig/rhn/clientCaps.d/distupgrade
+%config %{_sysconfdir}/sysconfig/rhn/clientCaps.d/distupgrade
 
