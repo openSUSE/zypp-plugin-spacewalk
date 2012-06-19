@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Jun 19 15:16:25 CEST 2012 - mc@suse.de
+
+- version 0.7
+- add distupgrade action and capability
+
+-------------------------------------------------------------------
 Tue Apr  3 11:06:06 CEST 2012 - ma@suse.de
 
 - Use versioned provides for zmd hack (bnc#743955)
