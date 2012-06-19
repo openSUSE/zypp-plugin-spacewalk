@@ -1,5 +1,5 @@
 Name:		zypp-plugin-spacewalk
-Version:	0.6
+Version:	0.7
 Release:	0
 Group:		System Environment/Base
 License:	GPLv2
@@ -49,6 +49,7 @@ a Spacewalk compatible server.
 %{__mkdir_p} %{buildroot}%{_prefix}/lib/zypp/plugins/services
 %{__mkdir_p} %{buildroot}%{_prefix}/lib/zypp/plugins/system
 %{__mkdir_p} %{buildroot}%{_prefix}/lib/zypp/plugins/urlresolver
+%{__mkdir_p} %{buildroot}%{_sysconfdir}/sysconfig/rhn/clientCaps.d/
 
 %{__install} bin/spacewalk-service.py %{buildroot}%{_prefix}/lib/zypp/plugins/services/spacewalk
 %{__install} bin/spacewalk-system.py %{buildroot}%{_prefix}/lib/zypp/plugins/system/spacewalk
@@ -58,6 +59,8 @@ a Spacewalk compatible server.
 %{__install} bin/spacewalk-action-package.py %{buildroot}%{_datadir}/rhn/actions/packages.py
 %{__install} bin/spacewalk-action-errata.py %{buildroot}%{_datadir}/rhn/actions/errata.py
 %{__install} bin/spacewalk-action-distupgrade.py %{buildroot}%{_datadir}/rhn/actions/distupgrade.py
+
+%{__install} -m 0644 distupgrade %{buildroot}%{_sysconfdir}/sysconfig/rhn/clientCaps.d/
 
 %{__mkdir_p} %{buildroot}%{_var}/lib/up2date
 
@@ -77,3 +80,7 @@ a Spacewalk compatible server.
      %{_datadir}/rhn/actions/errata.py
      %{_datadir}/rhn/actions/distupgrade.py
 %dir %{_var}/lib/up2date
+%dir %{_sysconfdir}/sysconfig/rhn
+%dir %{_sysconfdir}/sysconfig/rhn/clientCaps.d
+%config %{_sysconfdir}/sysconfig/rhn/clientCaps.d/distupgrade
+
