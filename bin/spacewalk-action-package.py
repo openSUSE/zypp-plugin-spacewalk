@@ -110,6 +110,10 @@ class Zypper:
         rettext = "\n".join(errors)
         return (task.returncode, rettext, {})
 
+    def refresh(self):
+        args = ["-n", "-x", "refresh", "-s"]
+        return self.__execute(args)
+
     def install(self, package_list):
         args = ["-n", "-x", "install"]
         args.extend(package_list)
@@ -139,6 +143,7 @@ class Zypper:
         return self.__execute(args)
 
     def distupgrade(self, channel_names=None, dry_run=False, run_patch=True):
+        (status, message, data) = self.refresh()
         (status, message, data) = self.dup(channel_names, dry_run)
         if dry_run or (status > 0 and status < 100) or not run_patch:
             return (status, message, data)
