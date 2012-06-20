@@ -71,14 +71,16 @@ def _change_product(params):
             foundVersion = False
             names = dom.getElementsByTagName('name')
             for name in names:
-                if name.firstChild.nodeValue.lower() == product['name']:
+                if (name.hasChildNodes() and
+                    name.firstChild.nodeValue.lower() == product['name']):
                     foundName = True
                     break
             if not foundName:
                 continue
             versions = dom.getElementsByTagName('version')
             for ver in versions:
-                if ver.firstChild.nodeValue.lower() == product['version']:
+                if (ver.hasChildNodes() and 
+                    ver.firstChild.nodeValue.lower() == product['version']):
                     foundVersion = True
                     break
             if not foundVersion:
@@ -89,16 +91,17 @@ def _change_product(params):
             for child in childs:
                 if child.nodeType != Node.ELEMENT_NODE:
                     continue
-                if (child.tagName == "name" and
+                if (child.tagName == "name" and child.hasChildNodes() and
                     child.firstChild.nodeValue.lower() == product['name']):
                     child.removeChild(child.firstChild)
                     child.appendChild(dom.createTextNode(product['new_name']))
-                if (child.tagName == "version" and
+                if (child.tagName == "version" and child.hasChildNodes() and
                     child.firstChild.nodeValue.lower() == product['version']):
                     child.removeChild(child.firstChild)
                     child.appendChild(dom.createTextNode(product['new_version']))
                 if child.tagName == "arch":
-                    child.removeChild(child.firstChild)
+                    if child.hasChildNodes():
+                        child.removeChild(child.firstChild)
                     child.appendChild(dom.createTextNode(product['new_arch']))
                 if child.tagName == "register":
                     regchilds = child.childNodes
@@ -106,12 +109,13 @@ def _change_product(params):
                         if rc.nodeType != Node.ELEMENT_NODE:
                             continue
                         if rc.tagName == "release":
-                            rc.removeChild(rc.firstChild)
-                            rc.appendChild(dom.createTextNode(product['new_release']))
+                            if rc.hasChildNodes():
+                                rc.removeChild(rc.firstChild)
+                            if product['new_release']:
+                                rc.appendChild(dom.createTextNode(product['new_release']))
 
             fwrite = open(fpath, 'w')
-            fwrite.write('<?xml version="1.0" encoding="UTF-8"?>\n')
-            fwrite.write(dom.toxml())
+            fwrite.write(dom.toxml('UTF-8'))
             fwrite.close()
             break
         if not found:
