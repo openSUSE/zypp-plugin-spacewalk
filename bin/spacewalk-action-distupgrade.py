@@ -24,7 +24,8 @@
 import os
 import sys
 sys.path.append("/usr/share/rhn/")
-import xml.etree.ElementTree as etree
+import xml.dom.minidom;
+from xml.dom import Node;
 
 from up2date_client import up2dateLog
 from actions.packages import Zypper
@@ -64,27 +65,55 @@ def _change_product(params):
             if not os.path.isfile(fpath):
                 # skip everything what is not a file
                 continue
-            root = etree.parse(fpath).getroot()
-            name = root.find('name')
-            version = root.find('version')
-            if not (name and version):
+
+            dom = xml.dom.minidom.parse(fpath)
+            foundName = False
+            foundVersion = False
+            names = dom.getElementsByTagName('name')
+            for name in names:
+                if name.firstChild.nodeValue.lower() == product['name']:
+                    foundName = True
+                    break
+            if not foundName:
                 continue
-            if (name.text.strip() == product['name'] and
-                version.text.strip() == product['version']):
-                    found = True
-                    if product.has_key('delete') and product['delete']:
-                        os.remove(fpath)
-                        continue
-                    name.text = product['new_name']
-                    version.text = product['new_version']
-                    arch = root.find('arch')
-                    arch.text = product['new_arch']
-                    release = root.find('register/release')
-                    release.text = product['new_release']
-                    with open(fpath, 'w') as fwrite:
-                        fwrite.write('<?xml version="1.0" encoding="UTF-8"?>\n')
-                        fwrite.write(etree.tostring(root, encoding="utf-8", method="xml"))
-                        fwrite.write('\n')
+            versions = dom.getElementsByTagName('version')
+            for ver in versions:
+                if ver.firstChild.nodeValue.lower() == product['version']:
+                    foundVersion = True
+                    break
+            if not foundVersion:
+                continue
+            found = True
+
+            childs = dom.documentElement.childNodes
+            for child in childs:
+                if child.nodeType != Node.ELEMENT_NODE:
+                    continue
+                if (child.tagName == "name" and
+                    child.firstChild.nodeValue.lower() == product['name']):
+                    child.removeChild(child.firstChild)
+                    child.appendChild(dom.createTextNode(product['new_name']))
+                if (child.tagName == "version" and
+                    child.firstChild.nodeValue.lower() == product['version']):
+                    child.removeChild(child.firstChild)
+                    child.appendChild(dom.createTextNode(product['new_version']))
+                if child.tagName == "arch":
+                    child.removeChild(child.firstChild)
+                    child.appendChild(dom.createTextNode(product['new_arch']))
+                if child.tagName == "register":
+                    regchilds = child.childNodes
+                    for rc in regchilds:
+                        if rc.nodeType != Node.ELEMENT_NODE:
+                            continue
+                        if rc.tagName == "release":
+                            rc.removeChild(rc.firstChild)
+                            rc.appendChild(dom.createTextNode(product['new_release']))
+
+            fwrite = open(fpath, 'w')
+            fwrite.write('<?xml version="1.0" encoding="UTF-8"?>\n')
+            fwrite.write(dom.toxml())
+            fwrite.close()
+            break
         if not found:
             ret = 1
     return ret
@@ -132,18 +161,18 @@ def upgrade(params, cache_only=None):
     if type(params) != type({}):
         return (13, "Invalid arguments passed to function", {})
 
-    if params.has_key('change_product') and params['change_product']:
-        _change_product(params)
-
-    dup_channel_names = None
-    if params.has_key('dup_channel_names') and type(params['dup_channel_names']) == type([]):
-        dup_channel_names = params['dup_channel_names']
-
     if params.has_key('dry_run') and params['dry_run']:
         dry_run = True
 
     if params.has_key('full_update') and params['full_update']:
         full_update = True
+
+    if not dry_run and params.has_key('change_product') and params['change_product']:
+        _change_product(params)
+
+    dup_channel_names = None
+    if params.has_key('dup_channel_names') and type(params['dup_channel_names']) == type([]):
+        dup_channel_names = params['dup_channel_names']
 
     zypper = Zypper()
     log.log_me("Called dist upgrade ", dup_channel_names)
