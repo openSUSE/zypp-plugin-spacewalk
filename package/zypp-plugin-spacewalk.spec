@@ -5,6 +5,7 @@ Group:		System Environment/Base
 License:	GPLv2
 Summary:	Client side Spacewalk integration for ZYpp
 Source0:	zypp-plugin-spacewalk.tar.bz2
+Source1:        zypp-plugin-spacewalk-rpmlintrc
 # Actually needs just libzypp, but we also want zypper to
 # handle services correctly:
 %if 0%{?suse_version} == 1010
