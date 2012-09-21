@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Fri Sep 21 16:19:06 CEST 2012 - mc@suse.de
+
+- try to restart spacewalksd and osad after distupgrade action
+
+-------------------------------------------------------------------
 Wed Jun 27 09:56:02 CEST 2012 - mc@suse.de
 
 - add rpmlintrc
