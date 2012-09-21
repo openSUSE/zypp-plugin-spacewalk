@@ -23,6 +23,7 @@
 
 import os
 import sys
+import subprocess
 sys.path.append("/usr/share/rhn/")
 import xml.dom.minidom;
 from xml.dom import Node;
@@ -79,7 +80,7 @@ def _change_product(params):
                 continue
             versions = dom.getElementsByTagName('version')
             for ver in versions:
-                if (ver.hasChildNodes() and 
+                if (ver.hasChildNodes() and
                     ver.firstChild.nodeValue.lower() == product['version']):
                     foundVersion = True
                     break
@@ -181,5 +182,12 @@ def upgrade(params, cache_only=None):
     zypper = Zypper()
     log.log_me("Called dist upgrade ", dup_channel_names)
     (status, message, data) = zypper.distupgrade(channel_names=dup_channel_names, dry_run=dry_run, run_patch=full_update)
+
+    # try to restart spacewalksd and osad
+    msg = subprocess.Popen(["rcrhnsd try-restart 2>&1"], shell=True, stdout=subprocess.PIPE).communicate()[0]
+    log.log_me("spacewalksd try-restart: ", msg)
+    msg = subprocess.Popen(["rcosad try-restart 2>&1"], shell=True, stdout=subprocess.PIPE).communicate()[0]
+    log.log_me("osad try-restart: ", msg)
+
     return __strip_message(status, message, data)
 
