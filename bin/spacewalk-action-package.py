@@ -152,7 +152,7 @@ class Zypper:
             # 103 - ZYPPER_EXIT_INF_RESTART_NEEDED
             # a package manager update was installed and there maybe
             # more updates available. Run zypper.patch again
-            (pstat, pmsg, pdata) = zypper.patch()
+            (pstat, pmsg, pdata) = self.patch()
         # after a successfull dup, this action is successfull completed
         # even if zypper.patch() failed. Failed patch installations
         # can be fixed later using normal errata action. No need to
