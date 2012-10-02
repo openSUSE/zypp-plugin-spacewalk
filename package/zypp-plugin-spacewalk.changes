@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Tue Oct  2 17:33:49 CEST 2012 - mc@suse.de
+
+- map zypper patch exit code 103 to 0
+  restart of the software management stack happens automatically
+  if zypper exits
+
+-------------------------------------------------------------------
 Fri Sep 21 16:19:06 CEST 2012 - mc@suse.de
 
 - try to restart spacewalksd and osad after distupgrade action
