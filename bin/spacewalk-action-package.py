@@ -203,6 +203,10 @@ class Zypper:
             message =  ("This system requires a reboot in order for the update "
                         "to take effect.\n") + response[1]
             response = (0, message, response[2])
+        elif response[0] == 103:
+            # zypper code 103 suggest to restart the software stack
+            # This is no error, so set status to 0
+            response = (0, response[1], response[2])
         return response
 
     def transact(self, transaction_data):
