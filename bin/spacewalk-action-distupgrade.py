@@ -53,6 +53,7 @@ def _change_product(params):
     if not params.has_key('products') or not params['products']:
         return 0
 
+    log.log_me("Manually product change requested: %s" % params['products'])
     ret = 0
     for product in params['products']:
         found = False
@@ -100,7 +101,7 @@ def _change_product(params):
                     child.firstChild.nodeValue.lower() == product['version']):
                     child.removeChild(child.firstChild)
                     child.appendChild(dom.createTextNode(product['new_version']))
-                if child.tagName == "arch":
+                if product['new_arch'] and child.tagName == "arch":
                     if child.hasChildNodes():
                         child.removeChild(child.firstChild)
                     child.appendChild(dom.createTextNode(product['new_arch']))
@@ -161,6 +162,7 @@ def upgrade(params, cache_only=None):
             If the option 'delete' is True, the product will be removed
             instead of changed.
     """
+    log.log_me("distupgrade.upgrade: %s" % params)
     dry_run = False
     full_update = False
     if type(params) != type({}):
