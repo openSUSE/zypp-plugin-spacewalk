@@ -57,9 +57,9 @@ a Spacewalk compatible server.
 %{__install} bin/spacewalk-resolver.py %{buildroot}%{_prefix}/lib/zypp/plugins/urlresolver/spacewalk
 
 %{__mkdir_p} %{buildroot}%{_datadir}/rhn/actions
-%{__install} bin/spacewalk-action-package.py %{buildroot}%{_datadir}/rhn/actions/packages.py
-%{__install} bin/spacewalk-action-errata.py %{buildroot}%{_datadir}/rhn/actions/errata.py
-%{__install} bin/spacewalk-action-distupgrade.py %{buildroot}%{_datadir}/rhn/actions/distupgrade.py
+%{__install} actions/packages.py %{buildroot}%{_datadir}/rhn/actions/
+%{__install} actions/errata.py %{buildroot}%{_datadir}/rhn/actions/
+%{__install} actions/distupgrade.py %{buildroot}%{_datadir}/rhn/actions/
 
 %{__install} -m 0644 distupgrade %{buildroot}%{_sysconfdir}/sysconfig/rhn/clientCaps.d/
 
