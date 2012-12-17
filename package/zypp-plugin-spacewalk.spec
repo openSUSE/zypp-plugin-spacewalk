@@ -65,6 +65,10 @@ a Spacewalk compatible server.
 
 %{__mkdir_p} %{buildroot}%{_var}/lib/up2date
 
+%if 0%{?suse_version}
+%py_compile %{buildroot}%{_datadir}/rhn/actions
+%endif
+
 %files
 %defattr(-,root,root)
 %dir %{_prefix}/lib/zypp
@@ -77,9 +81,9 @@ a Spacewalk compatible server.
      %{_prefix}/lib/zypp/plugins/urlresolver/spacewalk
 %dir %{_datadir}/rhn
 %dir %{_datadir}/rhn/actions
-     %{_datadir}/rhn/actions/packages.py
-     %{_datadir}/rhn/actions/errata.py
-     %{_datadir}/rhn/actions/distupgrade.py
+     %{_datadir}/rhn/actions/packages.py*
+     %{_datadir}/rhn/actions/errata.py*
+     %{_datadir}/rhn/actions/distupgrade.py*
 %dir %{_var}/lib/up2date
 %dir %{_sysconfdir}/sysconfig/rhn
 %dir %{_sysconfdir}/sysconfig/rhn/clientCaps.d
