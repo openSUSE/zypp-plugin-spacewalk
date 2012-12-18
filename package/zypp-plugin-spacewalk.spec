@@ -57,13 +57,17 @@ a Spacewalk compatible server.
 %{__install} bin/spacewalk-resolver.py %{buildroot}%{_prefix}/lib/zypp/plugins/urlresolver/spacewalk
 
 %{__mkdir_p} %{buildroot}%{_datadir}/rhn/actions
-%{__install} bin/spacewalk-action-package.py %{buildroot}%{_datadir}/rhn/actions/packages.py
-%{__install} bin/spacewalk-action-errata.py %{buildroot}%{_datadir}/rhn/actions/errata.py
-%{__install} bin/spacewalk-action-distupgrade.py %{buildroot}%{_datadir}/rhn/actions/distupgrade.py
+%{__install} actions/packages.py %{buildroot}%{_datadir}/rhn/actions/
+%{__install} actions/errata.py %{buildroot}%{_datadir}/rhn/actions/
+%{__install} actions/distupgrade.py %{buildroot}%{_datadir}/rhn/actions/
 
 %{__install} -m 0644 distupgrade %{buildroot}%{_sysconfdir}/sysconfig/rhn/clientCaps.d/
 
 %{__mkdir_p} %{buildroot}%{_var}/lib/up2date
+
+%if 0%{?suse_version}
+%py_compile %{buildroot}%{_datadir}/rhn/actions
+%endif
 
 %files
 %defattr(-,root,root)
@@ -77,9 +81,9 @@ a Spacewalk compatible server.
      %{_prefix}/lib/zypp/plugins/urlresolver/spacewalk
 %dir %{_datadir}/rhn
 %dir %{_datadir}/rhn/actions
-     %{_datadir}/rhn/actions/packages.py
-     %{_datadir}/rhn/actions/errata.py
-     %{_datadir}/rhn/actions/distupgrade.py
+     %{_datadir}/rhn/actions/packages.py*
+     %{_datadir}/rhn/actions/errata.py*
+     %{_datadir}/rhn/actions/distupgrade.py*
 %dir %{_var}/lib/up2date
 %dir %{_sysconfdir}/sysconfig/rhn
 %dir %{_sysconfdir}/sysconfig/rhn/clientCaps.d
