@@ -1,5 +1,5 @@
 Name:		zypp-plugin-spacewalk
-Version:	0.8
+Version:	0.9
 Release:	0
 Group:		System Environment/Base
 License:	GPLv2
@@ -32,6 +32,7 @@ BuildRequires:	python-devel
 Requires:	zypp-plugin-python
 
 Requires:	rhn-client-tools >= 1.1.15
+Requires:	zypper(oldpackage)
 Provides:	zypp-service-plugin(spacewalk) = %{version}
 Provides:	zypp-media-plugin(spacewalk) = %{version}
 BuildRoot:	%{_tmppath}/%{name}-%{version}-build
