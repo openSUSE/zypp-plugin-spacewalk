@@ -107,7 +107,7 @@ def update(errataidlist, cache_only=None):
         erratas = s.errata.getErrataNamesById(system_id, errataidlist)
         errata_names = [tup[1] for tup in erratas]
 
-        return packages.patch_install(errata_names)
+        return packages.patch_install(errata_names, cache_only)
     else:
         # see XXX comment in old_update's method definition
         old_update(errataidlist, cache_only)
