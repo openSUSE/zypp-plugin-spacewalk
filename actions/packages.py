@@ -71,8 +71,9 @@ def __package_name_from_tup__(tup):
     return pkginfo
 
 class Zypper:
-    def __init__(self):
-        pass
+    def __init__(self, download_only=False):
+        self.download_only = bool(download_only)
+
 
     def __parse_output(self, output):
         log.log_me(output)
@@ -116,6 +117,10 @@ class Zypper:
 
     def install(self, package_list):
         args = ["-n", "-x", "install", "--oldpackage"]
+
+        if self.download_only:
+            args.append("--download-only")
+
         args.extend(package_list)
         return self.__execute(args)
 
@@ -126,14 +131,25 @@ class Zypper:
 
     def update(self):
         args = ["-n", "-x", "update"]
+
+        if self.download_only:
+            args.append("--download-only")
+
         return self.__execute(args)
 
     def patch(self):
         args = ["-n", "-x", "patch"]
+
+        if self.download_only:
+            args.append("--download-only")
+
         return self.__execute(args)
 
     def dup(self, channel_names=None, dry_run=False):
         args = ["-n", "-x", "dup"]
+
+        if self.download_only:
+            args.append("--download-only")
         if dry_run:
             args.append("--dry-run")
         if channel_names and type(channel_names) == type([]):
@@ -179,7 +195,10 @@ class Zypper:
             Rollback do not check anything and will assume that state
             to which we are rolling back should be correct.
         """
-        args = ["-n", "-x", "install", "--oldpackage", "--"]
+        args = ["-n", "-x", "install"]
+        if self.download_only:
+            args.append("--download-only")
+        args.extend(["--oldpackage", "--"])
 
         for pkgtup, action in transaction_data['packages']:
             if ((action == "u") or (action == "i") or (action == "r")):
@@ -192,6 +211,10 @@ class Zypper:
 
     def patch_install(self, patch_list):
         args = ["-n", "-x", "install"]
+
+        if self.download_only:
+            args.append("--download-only")
+
         patches = ["patch:%s" % i for i in patch_list]
         args.extend(patches)
         response = self.__execute(args)
@@ -243,13 +266,13 @@ def update(package_list, cache_only=None):
         return (13, "Invalid arguments passed to function", {})
 
     log.log_me("Called update", package_list)
-    zypper = Zypper()
+    zypper = Zypper(download_only=cache_only)
     return __strip_message(zypper.install([__package_name_from_tup__(x) for x in package_list]))
 
-def patch_install(patch_list):
+def patch_install(patch_list, cache_only=None):
     log.log_me("Called patch install", patch_list)
 
-    zypper = Zypper()
+    zypper = Zypper(download_only=cache_only)
     return __strip_message(zypper.patch_install(patch_list))
 
 def runTransaction(transaction_data, cache_only=None):
@@ -267,7 +290,7 @@ def runTransaction(transaction_data, cache_only=None):
 
 def fullUpdate(force=0, cache_only=None):
     """ Update all packages on the system. """
-    zypper = Zypper()
+    zypper = Zypper(download_only=cache_only)
     return __strip_message(zypper.update())
 
 def checkNeedUpdate(rhnsd=None, cache_only=None):
