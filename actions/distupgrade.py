@@ -168,6 +168,9 @@ def upgrade(params, cache_only=None):
     if type(params) != type({}):
         return (13, "Invalid arguments passed to function", {})
 
+    if cache_only:
+        return (0, "no-ops for caching", {})
+
     if params.has_key('dry_run') and params['dry_run']:
         dry_run = True
 
