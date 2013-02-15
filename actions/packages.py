@@ -116,7 +116,7 @@ class Zypper:
         return self.__execute(args)
 
     def install(self, package_list):
-        args = ["-n", "-x", "install"]
+        args = ["-n", "-x", "install", "--oldpackage"]
 
         if self.download_only:
             args.append("--download-only")
@@ -195,7 +195,10 @@ class Zypper:
             Rollback do not check anything and will assume that state
             to which we are rolling back should be correct.
         """
-        args = ["-n", "-x", "install", "--"]
+        args = ["-n", "-x", "install"]
+        if self.download_only:
+            args.append("--download-only")
+        args.extend(["--oldpackage", "--"])
 
         for pkgtup, action in transaction_data['packages']:
             if ((action == "u") or (action == "i") or (action == "r")):
