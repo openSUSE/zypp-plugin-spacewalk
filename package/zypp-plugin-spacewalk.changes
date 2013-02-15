@@ -1,4 +1,12 @@
 -------------------------------------------------------------------
+Fri Feb 15 11:41:37 UTC 2013 - dmacvicar@suse.de
+
+- version 0.9.1
+- Handle the cache_only flag to actions correctly.
+  Prevents some future actions to be executed immediately.
+  (bnc#803941)
+
+-------------------------------------------------------------------
 Wed Jan 30 15:56:39 CET 2013 - mc@suse.de
 
 - version 0.9
