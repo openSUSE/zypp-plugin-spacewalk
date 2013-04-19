@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Apr 19 14:33:31 CEST 2013 - mc@suse.de
+
+- read transfer_timeout from zypp.conf and provide it 
+  via URL (bnc#815460)
+
+-------------------------------------------------------------------
 Fri Feb 15 11:41:37 UTC 2013 - dmacvicar@suse.de
 
 - version 0.9.1
