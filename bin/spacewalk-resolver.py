@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #
-# Copyright (c) 2010 Novell, Inc.
+# Copyright (c) 2010-2013 Novell, Inc.
 # All Rights Reserved.
 #
 # This program is free software; you can redistribute it and/or
@@ -35,6 +35,8 @@ if "spacewalk-resolver.py" in sys.argv[0]:
     sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '../python'))
 
 from zypp_plugin import Plugin
+
+CONF = "/etc/zypp/zypp.conf"
 
 class SpacewalkResolverPlugin(Plugin):
 
@@ -86,9 +88,26 @@ class SpacewalkResolverPlugin(Plugin):
 	# url might be a list type, we use the 1st one
 	if type(self.channel['url']) == type([]):
 	    self.channel['url'] = self.channel['url'][0]
-        url = "%s/GET-REQ/%s?head_requests=no" % (self.channel['url'], self.channel['label'])
+        url = "%s/GET-REQ/%s?head_requests=no%s" % (self.channel['url'],
+                                                    self.channel['label'],
+                                                    self._getTimeoutParam())
 
         self.answer("RESOLVEDURL", self.auth_headers, url)
+
+    def _getTimeoutParam(self):
+        """ read timeout from config"""
+        timeoutstr = ""
+        if os.path.exists(CONF):
+            c = open(CONF, "r")
+            for line in c:
+                if line[0] == '#':
+                    continue
+                match = re.match('\s*download.transfer_timeout\s*=\s*(\d+)', line)
+                if match:
+                    timeoutstr = "&timeout=%d" % (int(match.group(1)))
+                    break
+            c.close()
+        return timeoutstr
 
 
 plugin = SpacewalkResolverPlugin()
