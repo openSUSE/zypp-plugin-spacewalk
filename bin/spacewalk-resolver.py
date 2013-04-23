@@ -30,6 +30,8 @@ from up2date_client import rhnChannel
 from up2date_client import up2dateAuth
 from up2date_client import up2dateErrors
 
+from inspect import getargspec
+
 # for testing add the relative path to the load path
 if "spacewalk-resolver.py" in sys.argv[0]:
     sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '../python'))
@@ -68,7 +70,13 @@ class SpacewalkResolverPlugin(Plugin):
             self.answer("ERROR", {}, "Missing argument channel")
             return
 
-	details = rhnChannel.getChannelDetails();
+        # do we have spacewalk-client-tools with timeout option?
+        args = getargspec(rhnChannel.getChannelDetails)[0]
+        timeout = self._getTimeout()
+        if 'timeout' in args:
+            details = rhnChannel.getChannelDetails(timeout=timeout)
+        else:
+            details = rhnChannel.getChannelDetails();
 
 	self.channel = None
         for channel in details:
@@ -79,7 +87,10 @@ class SpacewalkResolverPlugin(Plugin):
             return
 
         self.auth_headers = {}
-	login_info = up2dateAuth.getLoginInfo()
+        if 'timeout' in args:
+            login_info = up2dateAuth.getLoginInfo(timeout=timeout)
+        else:
+            login_info = up2dateAuth.getLoginInfo()
 	for k,v in login_info.items():
 	    if k in spacewalk_auth_headers:
 		self.auth_headers[k] = v
@@ -88,15 +99,18 @@ class SpacewalkResolverPlugin(Plugin):
 	# url might be a list type, we use the 1st one
 	if type(self.channel['url']) == type([]):
 	    self.channel['url'] = self.channel['url'][0]
+        timeoutstr = ""
+        if timeout:
+            timeoutstr = "&timeout=%d" % timeout
         url = "%s/GET-REQ/%s?head_requests=no%s" % (self.channel['url'],
                                                     self.channel['label'],
-                                                    self._getTimeoutParam())
+                                                    timeoutstr)
 
         self.answer("RESOLVEDURL", self.auth_headers, url)
 
-    def _getTimeoutParam(self):
+    def _getTimeout(self):
         """ read timeout from config"""
-        timeoutstr = ""
+        timeout = None
         if os.path.exists(CONF):
             c = open(CONF, "r")
             for line in c:
@@ -104,11 +118,10 @@ class SpacewalkResolverPlugin(Plugin):
                     continue
                 match = re.match('\s*download.transfer_timeout\s*=\s*(\d+)', line)
                 if match:
-                    timeoutstr = "&timeout=%d" % (int(match.group(1)))
+                    timeout = int(match.group(1))
                     break
             c.close()
-        return timeoutstr
-
+        return timeout
 
 plugin = SpacewalkResolverPlugin()
 plugin.main()
