@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue Apr 23 15:06:49 CEST 2013 - mc@suse.de
+
+- use timeout also for XMLRPC calles if possible (bnc#815460)
+
+-------------------------------------------------------------------
 Fri Apr 19 14:33:31 CEST 2013 - mc@suse.de
 
 - read transfer_timeout from zypp.conf and provide it 
