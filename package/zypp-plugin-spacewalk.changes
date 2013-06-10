@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Jun 10 10:50:45 CEST 2013 - ma@suse.de
+
+- Always disable gpgcheck for repos in spacewalk service (bnc#823917)
+- version 0.9.2
+
+-------------------------------------------------------------------
 Tue Apr 23 15:06:49 CEST 2013 - mc@suse.de
 
 - use timeout also for XMLRPC calles if possible (bnc#815460)
@@ -6,7 +12,7 @@ Tue Apr 23 15:06:49 CEST 2013 - mc@suse.de
 -------------------------------------------------------------------
 Fri Apr 19 14:33:31 CEST 2013 - mc@suse.de
 
-- read transfer_timeout from zypp.conf and provide it 
+- read transfer_timeout from zypp.conf and provide it
   via URL (bnc#815460)
 
 -------------------------------------------------------------------
@@ -61,13 +67,13 @@ Tue Apr  3 11:06:06 CEST 2012 - ma@suse.de
 -------------------------------------------------------------------
 Mon Jan 30 13:02:22 CET 2012 - ma@suse.de
 
-- Code10: Provide 'zmd' to aid products requiring this in their 
+- Code10: Provide 'zmd' to aid products requiring this in their
   release package. (bnc#743955)
 
 -------------------------------------------------------------------
 Mon Nov 21 13:53:48 CET 2011 - ma@suse.de
 
-- Fix bug in spacewalk-action-package breaking spacewalk synchronize 
+- Fix bug in spacewalk-action-package breaking spacewalk synchronize
   profile. (bnc#731714)
 - version 0.5
 
