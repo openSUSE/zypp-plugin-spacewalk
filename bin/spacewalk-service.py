@@ -83,6 +83,7 @@ for channel in svrChannels:
         print >>sendback, "type=%s" % channel['type']
     if channel['gpg_key_url']:
 	print >>sendback, "gpgkey=%s" % channel['gpg_key_url']
-    else:
-	print >>sendback, "gpgcheck=0"
+    # bnc#823917: Always disable gpgcheck as SMgr does not sign metadata,
+    # even if the original gpg_key_url is known.
+    print >>sendback, "gpgcheck=0"
 
