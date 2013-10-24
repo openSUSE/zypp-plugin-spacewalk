@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 #
-# Copyright (c) 2010 Novell, Inc.
+# Copyright (c) 2010-2013 Novell, Inc.
 # All Rights Reserved.
 #
 # Based on yum-rhn-plugin
@@ -116,7 +116,7 @@ class Zypper:
         return self.__execute(args)
 
     def install(self, package_list):
-        args = ["-n", "-x", "install", "--oldpackage"]
+        args = ["-n", "-x", "install", "--oldpackage", "--auto-agree-with-licenses"]
 
         if self.download_only:
             args.append("--download-only")
@@ -130,7 +130,7 @@ class Zypper:
         return self.__execute(args)
 
     def update(self):
-        args = ["-n", "-x", "update"]
+        args = ["-n", "-x", "update", "--auto-agree-with-licenses"]
 
         if self.download_only:
             args.append("--download-only")
@@ -138,7 +138,7 @@ class Zypper:
         return self.__execute(args)
 
     def patch(self):
-        args = ["-n", "-x", "patch"]
+        args = ["-n", "-x", "patch", "--auto-agree-with-licenses"]
 
         if self.download_only:
             args.append("--download-only")
@@ -146,7 +146,7 @@ class Zypper:
         return self.__execute(args)
 
     def dup(self, channel_names=None, dry_run=False):
-        args = ["-n", "-x", "dup"]
+        args = ["-n", "-x", "dup", "--auto-agree-with-licenses"]
 
         if self.download_only:
             args.append("--download-only")
@@ -195,7 +195,7 @@ class Zypper:
             Rollback do not check anything and will assume that state
             to which we are rolling back should be correct.
         """
-        args = ["-n", "-x", "install"]
+        args = ["-n", "-x", "install", "--auto-agree-with-licenses"]
         if self.download_only:
             args.append("--download-only")
         args.extend(["--oldpackage", "--"])
@@ -210,7 +210,7 @@ class Zypper:
         return args
 
     def patch_install(self, patch_list):
-        args = ["-n", "-x", "install"]
+        args = ["-n", "-x", "install", "--auto-agree-with-licenses"]
 
         if self.download_only:
             args.append("--download-only")
