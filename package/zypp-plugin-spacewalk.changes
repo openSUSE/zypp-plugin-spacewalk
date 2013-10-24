@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu Oct 24 10:22:16 CEST 2013 - mc@suse.de
+
+- version 0.9.3
+- call zypper with --auto-agree-with-licenses, because interactive
+  aggreement is not possible from remote. (bnc#847254)
+
+-------------------------------------------------------------------
 Mon Jun 10 10:50:45 CEST 2013 - ma@suse.de
 
 - Always disable gpgcheck for repos in spacewalk service (bnc#823917)
