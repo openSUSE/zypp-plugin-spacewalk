@@ -62,7 +62,8 @@ a Spacewalk compatible server.
 %{__install} actions/errata.py %{buildroot}%{_datadir}/rhn/actions/
 %{__install} actions/distupgrade.py %{buildroot}%{_datadir}/rhn/actions/
 
-%{__install} -m 0644 distupgrade %{buildroot}%{_sysconfdir}/sysconfig/rhn/clientCaps.d/
+%{__install} -m 0644 clientCaps/packages %{buildroot}%{_sysconfdir}/sysconfig/rhn/clientCaps.d/
+%{__install} -m 0644 clientCaps/distupgrade %{buildroot}%{_sysconfdir}/sysconfig/rhn/clientCaps.d/
 
 %{__mkdir_p} %{buildroot}%{_var}/lib/up2date
 
@@ -89,5 +90,6 @@ a Spacewalk compatible server.
 %dir %{_var}/lib/up2date
 %dir %{_sysconfdir}/sysconfig/rhn
 %dir %{_sysconfdir}/sysconfig/rhn/clientCaps.d
+%config %{_sysconfdir}/sysconfig/rhn/clientCaps.d/packages
 %config %{_sysconfdir}/sysconfig/rhn/clientCaps.d/distupgrade
 
