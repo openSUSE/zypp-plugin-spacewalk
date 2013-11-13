@@ -1,0 +1,13 @@
+# foo
+
+query_string: kde
+solvable_name:
+solvable_description:
+case_sensitive: on
+
+solvable_keywords: x11
+
+type: package
+match_type: exact
+case_sensitive: on
+solvable_name: gnome-screensaver == 2.24.0

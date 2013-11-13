@@ -36,7 +36,7 @@ from inspect import getargspec
 if "spacewalk-resolver.py" in sys.argv[0]:
     sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), '../python'))
 
-from zypp_plugin import Plugin
+from zypper.plugin import Plugin
 
 CONF = "/etc/zypp/zypp.conf"
 
