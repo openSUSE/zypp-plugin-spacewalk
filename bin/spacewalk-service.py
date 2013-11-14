@@ -38,6 +38,7 @@ try:
     sys.path.append("/usr/share/rhn/")
     from up2date_client import rhnChannel
     from up2date_client import up2dateErrors
+    from up2date_client.rhncli import utf8_encode
 except:
     sys.stderr.write("%sPlease install package spacewalk-backend-libs.\n" % traceback.format_exc())
     sys.exit(1)
@@ -58,31 +59,31 @@ print "# Channels for service %s" % service_name
 for channel in svrChannels:
     print >>sendback
     if channel['name']:
-        print >>sendback, "# Name:        %s" % channel['name']
+        print >>sendback, "# Name:        %s" % utf8_encode(channel['name'])
     if channel['summary']:
-        print >>sendback, "# Summary:     %s" % channel['summary']
+        print >>sendback, "# Summary:     %s" % utf8_encode(channel['summary'])
     if channel['description']:
         print >>sendback, "# Description:"
         for line in [line for line in channel['description'].split(os.linesep)]:
-            print >>sendback, "#   %s" % line
+            print >>sendback, "#   %s" % utf8_encode(line)
         print >>sendback, "#"
     if channel['type']:
-        print >>sendback, "# Type:         %s" % channel['type']
+        print >>sendback, "# Type:         %s" % utf8_encode(channel['type'])
     if channel['version']:
-        print >>sendback, "# Version:      %s" % channel['version']
+        print >>sendback, "# Version:      %s" % utf8_encode(channel['version'])
     if channel['arch']:
-        print >>sendback, "# Architecture: %s" % channel['arch']
+        print >>sendback, "# Architecture: %s" % utf8_encode(channel['arch'])
     if channel['gpg_key_url']:
-        print >>sendback, "# Gpg Key:      %s" % channel['gpg_key_url']
-    print >>sendback, "[%s]" % channel['label']
-    print >>sendback, "name=%s" % channel['name']
-    print >>sendback, "baseurl=plugin:spacewalk?channel=%s" % channel['label']
+        print >>sendback, "# Gpg Key:      %s" % utf8_encode(channel['gpg_key_url'])
+    print >>sendback, "[%s]" % utf8_encode(channel['label'])
+    print >>sendback, "name=%s" % utf8_encode(channel['name'])
+    print >>sendback, "baseurl=plugin:spacewalk?channel=%s" % utf8_encode(channel['label'])
     print >>sendback, "enabled=1"
     print >>sendback, "autorefresh=1"
     if channel['type']:
-        print >>sendback, "type=%s" % channel['type']
+        print >>sendback, "type=%s" % utf8_encode(channel['type'])
     if channel['gpg_key_url']:
-	print >>sendback, "gpgkey=%s" % channel['gpg_key_url']
+        print >>sendback, "gpgkey=%s" % utf8_encode(channel['gpg_key_url'])
     # bnc#823917: Always disable gpgcheck as SMgr does not sign metadata,
     # even if the original gpg_key_url is known.
     print >>sendback, "gpgcheck=0"
