@@ -72,6 +72,7 @@ a Spacewalk compatible server.
 
 %files
 %defattr(-,root,root)
+%doc COPYING
 %dir %{_prefix}/lib/zypp
 %dir %{_prefix}/lib/zypp/plugins
 %dir %{_prefix}/lib/zypp/plugins/services
