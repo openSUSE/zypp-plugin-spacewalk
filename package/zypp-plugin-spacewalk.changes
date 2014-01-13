@@ -1,5 +1,5 @@
 -------------------------------------------------------------------
-Wed Jan  8 13:45:37 CET 2014  ma@suse.de
+Wed Jan  8 13:45:37 CET 2014 - ma@suse.de
 
 - Prepare packages.setLocks action for SUMA-2.1 (fate#312359)
 - version to 0.9.6
