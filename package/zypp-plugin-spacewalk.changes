@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue May 13 08:48:25 CEST 2014 - mc@suse.de
+
+- require rhn-client-tools >= 1.7.7 which contains utf8_encode
+  function (bnc#850105)
+
+-------------------------------------------------------------------
 Thu Apr 24 17:15:20 CEST 2014 - ma@suse.de
 
 - Fixed package lock

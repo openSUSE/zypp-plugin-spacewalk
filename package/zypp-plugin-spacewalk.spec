@@ -31,7 +31,7 @@ Requires:	python
 BuildRequires:	python-devel
 Requires:	zypp-plugin-python
 
-Requires:	rhn-client-tools >= 1.1.15
+Requires:	rhn-client-tools >= 1.7.7
 Requires:	zypper(oldpackage)
 Provides:	zypp-service-plugin(spacewalk) = %{version}
 Provides:	zypp-media-plugin(spacewalk) = %{version}
