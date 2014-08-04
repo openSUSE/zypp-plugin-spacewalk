@@ -46,6 +46,7 @@ a Spacewalk compatible server.
 %setup -q -n zypp-plugin-spacewalk
 
 %build
+egrep -r -l "\#\!\s*/usr/bin/env\s+python" * | xargs -i -d "\n" sed -i -e"s:\#\![ \t]*/usr/bin/env[ \t]\+python:\#\!/usr/bin/python:" {}
 
 %install
 %{__mkdir_p} %{buildroot}%{_prefix}/lib/zypp/plugins/services
