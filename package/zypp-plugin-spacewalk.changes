@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Aug 13 10:13:15 CEST 2014 - fcastelli@suse.de
+
+- Changed the spec file to force usage of the official python VM; do
+  no longer use "!#/usr/bin/env python" as shebang. (bnc#889363)
+
+-------------------------------------------------------------------
 Tue May 13 08:48:25 CEST 2014 - mc@suse.de
 
 - require rhn-client-tools >= 1.7.7 which contains utf8_encode
