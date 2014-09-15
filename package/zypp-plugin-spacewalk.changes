@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Sep 15 15:14:18 CEST 2014 - mc@suse.de
+
+- check for retrieveOnly option in up2date conf and set
+  download_only (bnc#896254)
+
+-------------------------------------------------------------------
 Tue Aug 13 10:13:15 CEST 2014 - fcastelli@suse.de
 
 - Changed the spec file to force usage of the official python VM; do

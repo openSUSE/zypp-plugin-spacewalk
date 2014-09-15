@@ -75,7 +75,10 @@ def __package_name_from_tup__(tup):
 class Zypper:
     def __init__(self, download_only=False):
         self.download_only = bool(download_only)
-
+        self.cfg = config.initUp2dateConfig()
+        if self.cfg['retrieveOnly']:
+            log.log_me('Configured to "retrieveOnly"')
+            self.download_only = True
 
     def __parse_output(self, output):
         log.log_me(output)
