@@ -1,5 +1,5 @@
 Name:		zypp-plugin-spacewalk
-Version:	0.9.8
+Version:	0.9.9
 Release:	0
 Group:		System Environment/Base
 License:	GPL-2.0

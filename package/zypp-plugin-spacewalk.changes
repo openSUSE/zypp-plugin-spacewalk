@@ -1,4 +1,14 @@
 -------------------------------------------------------------------
+Wed Apr 29 11:06:13 UTC 2015 - dmacvicar@suse.de
+
+- check for package signatures when metadata is not signed
+  (fate#314603)
+- fix build check warnings:
+  * use SPDX license name (GPL-2.0)
+  * egrep usage
+- 0.9.9
+
+-------------------------------------------------------------------
 Mon Sep 15 15:14:18 CEST 2014 - mc@suse.de
 
 - check for retrieveOnly option in up2date conf and set
