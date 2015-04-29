@@ -2,7 +2,7 @@ Name:		zypp-plugin-spacewalk
 Version:	0.9.8
 Release:	0
 Group:		System Environment/Base
-License:	GPLv2
+License:	GPL-2.0
 Summary:	Client side Spacewalk integration for ZYpp
 Source0:	zypp-plugin-spacewalk.tar.bz2
 Source1:        zypp-plugin-spacewalk-rpmlintrc
