@@ -87,4 +87,7 @@ for channel in svrChannels:
     # bnc#823917: Always disable gpgcheck as SMgr does not sign metadata,
     # even if the original gpg_key_url is known.
     print >>sendback, "gpgcheck=0"
+    # fate#314603 check package signature if metadata not signed
+    print >>sendback, "pkg_gpgcheck=1"
+    print >>sendback, "repo_gpgcheck=0"
 
