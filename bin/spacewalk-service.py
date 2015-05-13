@@ -25,7 +25,7 @@ import os
 import traceback
 
 if not os.path.exists("/etc/sysconfig/rhn/systemid"):
-    sys.stderr.write("This client is not registered to any spacewalk server.\n")
+    sys.stderr.write("This system is not registered to any spacewalk server. If the system is not intended to be managed with spacewalk, please uninstall the zypp-plugin-spacewalk package.\n")
     sys.exit(1)
 
 # ma@suse.de: some modules seem to write debug output to stdout,
