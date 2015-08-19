@@ -244,7 +244,6 @@ class Zypper:
 def __strip_message(tup):
         """reduce text to maximal 1008 characters"""
         (code, message, response) = tup[:]
-        message = '<pre>' + message + '</pre>'
         if len(message) > 1008:
             textstart = message[:200]
             textend = message[-800:]
