@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Aug 31 09:52:19 CEST 2015 - ma@suse.com
+
+- fix output of client events (bsc#935377)
+- 0.9.10
+
+-------------------------------------------------------------------
 Wed Apr 29 11:06:13 UTC 2015 - dmacvicar@suse.de
 
 - check for package signatures when metadata is not signed
