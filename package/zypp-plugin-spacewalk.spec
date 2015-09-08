@@ -25,6 +25,11 @@ Requires:	zypper >= 1.3.12
 BuildRequires:	libzypp >= 8.12.0
 Requires:	zypper >= 1.5.3
 %endif
+%if 0%{?suse_version} >= 1315
+# SLES12+
+Requires:       zypper(updatestack-only)
+%endif
+
 Requires:	python-xml
 
 Requires:	python
@@ -64,7 +69,11 @@ grep -E -r -l "\#\!\s*/usr/bin/env\s+python" * | xargs -i -d "\n" sed -i -e"s:\#
 %{__install} actions/distupgrade.py %{buildroot}%{_datadir}/rhn/actions/
 
 %{__install} -m 0644 clientCaps/packages %{buildroot}%{_sysconfdir}/sysconfig/rhn/clientCaps.d/
+%if 0%{?suse_version} >= 1315
+%{__install} -m 0644 clientCaps/distupgrade2 %{buildroot}%{_sysconfdir}/sysconfig/rhn/clientCaps.d/distupgrade
+%else
 %{__install} -m 0644 clientCaps/distupgrade %{buildroot}%{_sysconfdir}/sysconfig/rhn/clientCaps.d/
+%endif
 
 %{__mkdir_p} %{buildroot}%{_var}/lib/up2date
 
