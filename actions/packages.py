@@ -150,11 +150,13 @@ class Zypper:
 
         return self.__execute(args)
 
-    def patch(self):
+    def patch(self, updatestack_only=False):
         args = ["-n", "-x", "patch", "--auto-agree-with-licenses"]
 
         if self.download_only:
             args.append("--download-only")
+        if updatestack_only and self.dup_version == 2:
+            args.append("--updatestack-only")
 
         return self.__execute(args)
 
