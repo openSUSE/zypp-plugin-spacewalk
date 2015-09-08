@@ -142,12 +142,13 @@ class Zypper:
         args.extend(package_list)
         return self.__execute(args)
 
-    def update(self):
+    def update(self, package_list=[]):
         args = ["-n", "-x", "update", "--auto-agree-with-licenses"]
 
         if self.download_only:
             args.append("--download-only")
-
+        if len(package_list) > 0:
+            args.extend(package_list)
         return self.__execute(args)
 
     def patch(self, updatestack_only=False):
