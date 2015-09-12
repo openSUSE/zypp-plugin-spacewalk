@@ -188,11 +188,5 @@ def upgrade(params, cache_only=None):
     log.log_me("Called dist upgrade ", dup_channel_names)
     (status, message, data) = zypper.distupgrade(channel_names=dup_channel_names, dry_run=dry_run, run_patch=full_update)
 
-    # try to restart spacewalksd and osad
-    msg = subprocess.Popen(["rcrhnsd try-restart 2>&1"], shell=True, stdout=subprocess.PIPE).communicate()[0]
-    log.log_me("spacewalksd try-restart: ", msg)
-    msg = subprocess.Popen(["rcosad try-restart 2>&1"], shell=True, stdout=subprocess.PIPE).communicate()[0]
-    log.log_me("osad try-restart: ", msg)
-
     return __strip_message(status, message, data)
 
