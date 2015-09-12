@@ -22,6 +22,7 @@ Release:        0
 Summary:        Client side Spacewalk integration for ZYpp
 License:        GPL-2.0
 Group:          System Environment/Base
+Url:            https://github.com/openSUSE/zypp-plugin-spacewalk
 Source0:        zypp-plugin-spacewalk.tar.bz2
 Source1:        zypp-plugin-spacewalk-rpmlintrc
 # Actually needs just libzypp, but we also want zypper to
