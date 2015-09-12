@@ -41,7 +41,6 @@ ACTION_VERSION = 2
 
 def __strip_message(code, message, response):
         """reduce text to maximal 1008 characters"""
-        message = '<pre>' + message + '</pre>'
         if len(message) > 1008:
             textstart = message[:200]
             textend = message[-800:]
