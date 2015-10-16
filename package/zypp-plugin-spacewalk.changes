@@ -3,6 +3,7 @@ Sat Sep 12 10:54:52 CEST 2015 - mc@suse.de
 
 - support distribution upgrade with --no-allow-vendor-change
   for sle12 (FATE#319128)
+- 0.9.11
 
 -------------------------------------------------------------------
 Mon Aug 31 09:52:19 CEST 2015 - ma@suse.com
