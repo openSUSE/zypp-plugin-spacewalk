@@ -32,6 +32,7 @@ from up2date_client import up2dateLog
 from up2date_client import config
 from up2date_client import rpmUtils
 from up2date_client import rhnPackageInfo
+from up2date_client import clientCaps
 
 from tempfile import mkstemp
 
@@ -79,6 +80,13 @@ class Zypper:
         if self.cfg['retrieveOnly']:
             log.log_me('Configured to "retrieveOnly"')
             self.download_only = True
+
+        # dup_version == 2 support
+        # * dup   --no-allow-vendor-change
+        # * patch --updatestack-only
+        self.dup_version = 1
+        if 'distupgrade.upgrade' in clientCaps.caps.data:
+            self.dup_version = int(clientCaps.caps.data['distupgrade.upgrade']['version'])
 
     def __parse_output(self, output):
         log.log_me(output)
@@ -134,19 +142,22 @@ class Zypper:
         args.extend(package_list)
         return self.__execute(args)
 
-    def update(self):
+    def update(self, package_list=[]):
         args = ["-n", "-x", "update", "--auto-agree-with-licenses"]
 
         if self.download_only:
             args.append("--download-only")
-
+        if len(package_list) > 0:
+            args.extend(package_list)
         return self.__execute(args)
 
-    def patch(self):
+    def patch(self, updatestack_only=False):
         args = ["-n", "-x", "patch", "--auto-agree-with-licenses"]
 
         if self.download_only:
             args.append("--download-only")
+        if updatestack_only and self.dup_version == 2:
+            args.append("--updatestack-only")
 
         return self.__execute(args)
 
@@ -157,10 +168,13 @@ class Zypper:
             args.append("--download-only")
         if dry_run:
             args.append("--dry-run")
-        if channel_names and type(channel_names) == type([]):
-            for name in channel_names:
-                args.append("--from")
-                args.append("spacewalk:%s" % name)
+        if self.dup_version == 1:
+            if channel_names and type(channel_names) == type([]):
+                for name in channel_names:
+                    args.append("--from")
+                    args.append("spacewalk:%s" % name)
+        elif self.dup_version == 2:
+            args.append("--no-allow-vendor-change")
         return self.__execute(args)
 
     def distupgrade(self, channel_names=None, dry_run=False, run_patch=True):
