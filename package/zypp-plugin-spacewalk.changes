@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon Oct 19 13:52:56 CEST 2015 - mc@suse.de
+
+- use sle_version macro to detect SLE12
+
+-------------------------------------------------------------------
 Sat Sep 12 10:54:52 CEST 2015 - mc@suse.de
 
 - support distribution upgrade with --no-allow-vendor-change
