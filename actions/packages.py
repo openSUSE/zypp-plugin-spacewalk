@@ -89,6 +89,8 @@ class Zypper:
             self.dup_version = int(clientCaps.caps.data['distupgrade.upgrade']['version'])
 
     def __parse_output(self, output):
+        # take care that we realy have only UTF-8 characters
+        output = output.decode('utf-8', 'replace').encode('utf-8', 'ignore')
         log.log_me(output)
         dom = xml.dom.minidom.parseString(output)
         childs = dom.documentElement.childNodes
