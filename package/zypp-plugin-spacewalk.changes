@@ -2,6 +2,7 @@
 Fri Dec 11 13:21:14 CET 2015 - mc@suse.de
 
 - convert zypper output to valid UTF-8 (bsc#954602)
+- 0.9.12
 
 -------------------------------------------------------------------
 Mon Oct 19 13:52:56 CEST 2015 - mc@suse.de
