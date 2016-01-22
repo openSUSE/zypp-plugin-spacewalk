@@ -38,7 +38,10 @@ try:
     sys.path.append("/usr/share/rhn/")
     from up2date_client import rhnChannel
     from up2date_client import up2dateErrors
-    from up2date_client.rhncli import utf8_encode
+    try:
+        from up2date_client.rhncli import utf8_encode
+    except ImportError:
+        from rhn.i18n import sstr as utf8_encode
 except:
     sys.stderr.write("%sPlease install package spacewalk-backend-libs.\n" % traceback.format_exc())
     sys.exit(1)
