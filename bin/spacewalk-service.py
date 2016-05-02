@@ -77,7 +77,8 @@ for channel in svrChannels:
         print >>sendback, "# Gpg Key:      %s" % utf8_encode(channel['gpg_key_url'])
     print >>sendback, "[%s]" % utf8_encode(channel['label'])
     print >>sendback, "name=%s" % utf8_encode(channel['name'])
-    print >>sendback, "baseurl=plugin:spacewalk?channel=%s" % utf8_encode(channel['label'])
+    for i in range(0, len(channel['url'])):
+        print >>sendback, "baseurl=plugin:spacewalk?channel=%s&server=%d" % (utf8_encode(channel['label']),i)
     print >>sendback, "enabled=1"
     print >>sendback, "autorefresh=1"
     if channel['type']:
