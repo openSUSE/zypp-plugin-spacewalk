@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Mon May  2 15:44:24 CEST 2016 - mantel@suse.de
+
+- fix failover if several URLs per repo are configured (bsc#964932)
+
+-------------------------------------------------------------------
 Wed Apr 29 11:06:13 UTC 2015 - dmacvicar@suse.de
 
 - check for package signatures when metadata is not signed
