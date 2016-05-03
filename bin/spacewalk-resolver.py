@@ -70,6 +70,11 @@ class SpacewalkResolverPlugin(Plugin):
             self.answer("ERROR", {}, "Missing argument channel")
             return
 
+        if headers.has_key('server'):
+            server = int(headers['server'])
+        else:
+            server = 0
+
         # do we have spacewalk-client-tools with timeout option?
         args = getargspec(rhnChannel.getChannelDetails)[0]
         timeout = self._getTimeout()
@@ -96,9 +101,9 @@ class SpacewalkResolverPlugin(Plugin):
 		self.auth_headers[k] = v
 	#self.answer("META", li)
 
-	# url might be a list type, we use the 1st one
+	# url is a list, use the one provided by the given server
 	if type(self.channel['url']) == type([]):
-	    self.channel['url'] = self.channel['url'][0]
+	    self.channel['url'] = self.channel['url'][server]
         timeoutstr = ""
         if timeout:
             timeoutstr = "&timeout=%d" % timeout
