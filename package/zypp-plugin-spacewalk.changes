@@ -1,4 +1,9 @@
 -------------------------------------------------------------------
+Tue May  3 08:40:40 CEST 2016 - mantel@suse.de
+
+- fix failover for multiple URLs per repo (bsc#964932)
+
+-------------------------------------------------------------------
 Fri Jan 22 16:07:28 CET 2016 - mc@suse.de
 
 - adapt for up2date client changes
