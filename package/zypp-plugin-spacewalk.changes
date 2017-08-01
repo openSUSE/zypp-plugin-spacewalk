@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Aug  1 14:07:53 CEST 2017 - mantel@suse.de
+
+- make pkg_gpgcheck configurable
+- 0.9.14
+
+-------------------------------------------------------------------
 Fri Jan 22 16:07:28 CET 2016 - mc@suse.de
 
 - adapt for up2date client changes
