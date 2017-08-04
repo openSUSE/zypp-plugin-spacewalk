@@ -93,9 +93,6 @@ for channel in svrChannels:
     print >>sendback, "gpgcheck=0"
     # fate#314603 check package signature if metadata not signed
     # allow disabling of package gpg check for custom channels
-    if hasattr(channel, 'pkg_gpgcheck'):
-        print >>sendback, "pkg_gpgcheck=%s" % utf8_encode(channel['pkg_gpgcheck'])
-    else:
-        print >>sendback, "pkg_gpgcheck=1"
+    print >>sendback, "pkg_gpgcheck=%s" % utf8_encode(channel.dict.get('gpgcheck', "1"))
     print >>sendback, "repo_gpgcheck=0"
 
