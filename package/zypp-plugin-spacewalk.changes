@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Aug  7 11:31:23 CEST 2017 - ma@suse.com
+
+- Fix setting pkg_gpgcheck
+- 0.9.16
+
+-------------------------------------------------------------------
 Tue Aug  1 14:07:53 CEST 2017 - mantel@suse.de
 
 - make pkg_gpgcheck configurable
