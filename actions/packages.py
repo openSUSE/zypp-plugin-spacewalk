@@ -68,9 +68,9 @@ def __package_name_from_tup__(tup):
     if e:
         v = '%s:%s' % (e, v)
     if v:
-	pkginfo = '%s-%s' % (pkginfo, v)
+        pkginfo = '%s-%s' % (pkginfo, v)
     if r:
-	pkginfo = '%s-%s' % (pkginfo, r)
+        pkginfo = '%s-%s' % (pkginfo, r)
     return pkginfo
 
 class Zypper:
@@ -293,7 +293,7 @@ def setLocks(package_list, cache_only=None):
 
     try:
         os.rename(tmpf_name, '/etc/zypp/locks')
-    except OSError, e:
+    except OSError as e:
         error_message = "Error renaming '{tmpf_name}' to '/etc/zypp/locks': {error}".format(
             tmpf_name=tmpf_name, error=e.strerror)
         log.log_me(error_message)
@@ -397,7 +397,7 @@ def refresh_list(rhnsd=None, cache_only=None):
     try:
         rhnPackageInfo.updatePackageProfile()
     except:
-        print "ERROR: refreshing remote package list for System Profile"
+        print("ERROR: refreshing remote package list for System Profile")
         return (20, "Error refreshing package list", {})
 
     touch_time_stamp()
@@ -457,14 +457,14 @@ if __name__ == "__main__":
     #print update([['rubygem-thoughtbot-shoulda', '2.9.2', '1.1', '', 'x86_64']])
     #print remove([['ant', '1.7.1', '12.1', '', 'x86_64']])
 
-    print setLocks([
+    print(setLocks([
       ['rubygem-thoughtbot-shoulda', '2.9.2', '1.1', '', 'x86_64'],
       ['foo', '1.0.0', '1', '', ''],
       ['bar', '2.0.0', '2', '', '']
-    ])
+    ]))
     setLocks([])
     exit( 0 )
-    print "Transaction args:"
+    print("Transaction args:")
     transaction = { 'packages' : [
             [['foo', '1.0.0', '1', '', ''], 'e'],
             [ ['bar', '2.0.0', '2', '', ''], 'i'] ]}
