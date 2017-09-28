@@ -1,7 +1,7 @@
 #
 # spec file for package zypp-plugin-spacewalk
 #
-# Copyright (c) 2015 SUSE LINUX GmbH, Nuernberg, Germany.
+# Copyright (c) 2017 SUSE LINUX GmbH, Nuernberg, Germany.
 #
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed
@@ -15,8 +15,8 @@
 # Please submit bugfixes or comments via http://bugs.opensuse.org/
 #
 
-%{!?python2_sitelib: %global python2_sitelib %(python -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
+%{!?python2_sitelib: %global python2_sitelib %(python -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
 %if 0%{?suse_version} > 1320
 %bcond_without python3
@@ -34,7 +34,6 @@
 %global py2_actions %{python2_sitelib}
 %endif
 %endif
-
 
 Name:           zypp-plugin-spacewalk
 Version:        1.0.0
@@ -92,7 +91,6 @@ a Spacewalk compatible server.
 %if %{without rhnpath}
 %package -n python2-%{name}
 Summary:        Client side Spacewalk integration for ZYpp
-License:        GPL-2.0
 Group:          System Environment/Base
 Requires:       %{name} = %{version}-%{release}
 Requires:       python2-rhn-client-tools >= 1.7.7
@@ -104,7 +102,6 @@ Python 2 specific files of %{name}
 %if %{with python3}
 %package -n python3-%{name}
 Summary:        Client side Spacewalk integration for ZYpp
-License:        GPL-2.0
 Group:          System Environment/Base
 Requires:       %{name} = %{version}-%{release}
 BuildRequires:  python3-devel
