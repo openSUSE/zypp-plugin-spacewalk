@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu Sep 28 07:42:59 UTC 2017 - mc@suse.com
+
+- 1.0.0
+- python3 compatibility
+- build python2/python3 subpackages
+
+-------------------------------------------------------------------
 Mon Aug  7 11:31:23 CEST 2017 - ma@suse.com
 
 - Fix setting pkg_gpgcheck
