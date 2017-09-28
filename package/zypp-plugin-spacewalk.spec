@@ -82,6 +82,9 @@ Requires:       %{pythonX}-%{name} = %{version}-%{release}
 Provides:       zypp-media-plugin(spacewalk) = %{version}
 Provides:       zypp-service-plugin(spacewalk) = %{version}
 BuildRoot:      %{_tmppath}/%{name}-%{version}-build
+%if 0%{?suse_version} >= 1210
+BuildArch:      noarch
+%endif
 
 %description
 This plugin allows a ZYpp powered Linux system to see Spacewalk
