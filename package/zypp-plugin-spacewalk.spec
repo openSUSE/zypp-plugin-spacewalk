@@ -185,6 +185,7 @@ grep -E -r -l "\#\!\s*/usr/bin/env\s+python" * | xargs -i -d "\n" sed -i -e"s:\#
 
 %if %{without rhnpath}
 %files -n python2-%{name}
+%defattr(-,root,root)
 %dir %{py2_actions}/actions
      %{py2_actions}/actions/packages.py*
      %{py2_actions}/actions/errata.py*
@@ -193,6 +194,7 @@ grep -E -r -l "\#\!\s*/usr/bin/env\s+python" * | xargs -i -d "\n" sed -i -e"s:\#
 
 %if %{with python3}
 %files -n python3-%{name}
+%defattr(-,root,root)
 %dir %{py3_actions}/actions
 %dir %{py3_actions}/actions/__pycache__
      %{py3_actions}/actions/packages.py*
