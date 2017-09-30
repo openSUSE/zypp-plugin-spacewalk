@@ -21,8 +21,8 @@
 %if 0%{?suse_version} > 1320
 %bcond_without python3
 %bcond_with rhnpath
-%global py2_actions %{python2_sitelib}
-%global py3_actions %{python3_sitelib}
+%global py2_actions %{python2_sitelib}/rhn
+%global py3_actions %{python3_sitelib}/rhn
 %define pythonX python3
 %else
 %bcond_with python3
@@ -31,7 +31,7 @@
 %global py2_actions %{_datadir}/rhn/
 %else
 %define pythonX python2
-%global py2_actions %{python2_sitelib}
+%global py2_actions %{python2_sitelib}/rhn
 %endif
 %endif
 
@@ -96,7 +96,7 @@ a Spacewalk compatible server.
 Summary:        Client side Spacewalk integration for ZYpp
 Group:          System Environment/Base
 Requires:       %{name} = %{version}-%{release}
-Requires:       python2-rhn-client-tools >= 1.7.7
+Requires:       python2-rhn-client-tools >= 2.8.4
 
 %description -n python2-%{name}
 Python 2 specific files of %{name}
@@ -109,7 +109,7 @@ Group:          System Environment/Base
 Requires:       %{name} = %{version}-%{release}
 BuildRequires:  python3-devel
 Requires:       python3
-Requires:       python3-rhn-client-tools >= 1.7.7
+Requires:       python3-rhn-client-tools >= 2.8.4
 
 %description -n python3-%{name}
 Python 3 specific files of %{name}
@@ -153,7 +153,7 @@ grep -E -r -l "\#\!\s*/usr/bin/env\s+python" * | xargs -i -d "\n" sed -i -e"s:\#
 %{__mkdir_p} %{buildroot}%{_var}/lib/up2date
 
 %if 0%{?suse_version}
-%py_compile %{buildroot}%{py2_actions}/actions
+%py_compile %{buildroot}%{py2_actions}
 %if %{with python3}
 %py3_compile %{buildroot}/%{py3_actions}
 %endif
