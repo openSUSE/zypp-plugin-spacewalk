@@ -31,7 +31,10 @@ sys.path.append("/usr/share/rhn/")
 from up2date_client import rhnserver
 from up2date_client import up2dateAuth
 from up2date_client import rpmUtils
-from actions import packages
+try:
+    from actions import packages
+except ImportError:
+    from rhn.actions import packages
 
 __rhnexport__ = [
     'update']
