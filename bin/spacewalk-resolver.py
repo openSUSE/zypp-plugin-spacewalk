@@ -66,11 +66,11 @@ class SpacewalkResolverPlugin(Plugin):
             return
 
 
-        if not headers.has_key('channel'):
+        if 'channel' not in headers:
             self.answer("ERROR", {}, "Missing argument channel")
             return
 
-        if headers.has_key('server'):
+        if 'server' in headers:
             server = int(headers['server'])
         else:
             server = 0
