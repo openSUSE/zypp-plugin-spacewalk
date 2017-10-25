@@ -67,24 +67,32 @@ Requires:       zypper >= 1.5.3
 # SLES12+
 Requires:       zypper(updatestack-only)
 %endif
-
-Requires:       python-xml
-
-Requires:       python
-BuildRequires:  python-devel
-Requires:       zypp-plugin-python
-
-Requires:       rhn-client-tools >= 1.7.7
 Requires:       zypper(oldpackage)
-%if %{with python3} || %{without rhnpath}
+
+%if %{without python3}
+Requires:       python
+Requires:       python-xml
+Requires:       zypp-plugin-python
+Requires:       rhn-client-tools >= 1.7.7
+Requires:       rhnlib
+BuildRequires:  python-devel
+%else
+Requires:       python3
+Requires:       zypp-plugin-python
+Requires:       rhn-client-tools >= 2.8.4
+Requires:       python3-rhnlib
+BuildRequires:  python3-devel
+%endif
+%if %{without rhnpath}
 Requires:       %{pythonX}-%{name} = %{version}-%{release}
 %endif
+
 Provides:       zypp-media-plugin(spacewalk) = %{version}
 Provides:       zypp-service-plugin(spacewalk) = %{version}
-BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 %if 0%{?suse_version} >= 1210
 BuildArch:      noarch
 %endif
+BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 
 %description
 This plugin allows a ZYpp powered Linux system to see Spacewalk
@@ -97,6 +105,7 @@ Summary:        Client side Spacewalk integration for ZYpp
 Group:          System Environment/Base
 Requires:       %{name} = %{version}-%{release}
 Requires:       python2-rhn-client-tools >= 2.8.4
+BuildRequires:  python-devel
 
 %description -n python2-%{name}
 Python 2 specific files of %{name}
