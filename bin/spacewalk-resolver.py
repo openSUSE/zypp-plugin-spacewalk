@@ -44,11 +44,11 @@ class SpacewalkResolverPlugin(Plugin):
 
     """ Pure exception handling """
     def RESOLVEURL(self, headers, body):
-	try:
-	    self.doRESOLVEURL(headers, body)
-	except up2dateErrors.Error as e:
+        try:
+            self.doRESOLVEURL(headers, body)
+        except up2dateErrors.Error as e:
             self.answer("ERROR", {}, str(e))
-	except:
+        except:
             self.answer("ERROR", {}, traceback.format_exc())
 
     """ RESOLVEURL action """
@@ -83,7 +83,7 @@ class SpacewalkResolverPlugin(Plugin):
         else:
             details = rhnChannel.getChannelDetails();
 
-	self.channel = None
+        self.channel = None
         for channel in details:
             if channel['label'] == headers['channel']:
                 self.channel = channel
@@ -96,14 +96,14 @@ class SpacewalkResolverPlugin(Plugin):
             login_info = up2dateAuth.getLoginInfo(timeout=timeout)
         else:
             login_info = up2dateAuth.getLoginInfo()
-	for k,v in login_info.items():
-	    if k in spacewalk_auth_headers:
-		self.auth_headers[k] = v
-	#self.answer("META", li)
+        for k,v in login_info.items():
+            if k in spacewalk_auth_headers:
+                self.auth_headers[k] = v
+        #self.answer("META", li)
 
-	# url is a list, use the one provided by the given server
-	if type(self.channel['url']) == type([]):
-	    self.channel['url'] = self.channel['url'][server]
+        # url is a list, use the one provided by the given server
+        if type(self.channel['url']) == type([]):
+            self.channel['url'] = self.channel['url'][server]
         timeoutstr = ""
         if timeout:
             timeoutstr = "&timeout=%d" % timeout
