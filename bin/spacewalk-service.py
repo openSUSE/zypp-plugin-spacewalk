@@ -48,10 +48,10 @@ except:
 
 try:
     svrChannels = rhnChannel.getChannelDetails()
-except up2dateErrors.NoSystemIdError, e:
+except up2dateErrors.NoSystemIdError as e:
     sys.stderr.write("%s\n" % e)
     sys.exit(42)
-except up2dateErrors.Error, e:
+except up2dateErrors.Error as e:
     sys.stderr.write("%s\n" % e)
     sys.exit(1)
 except:

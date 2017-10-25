@@ -46,7 +46,7 @@ class SpacewalkResolverPlugin(Plugin):
     def RESOLVEURL(self, headers, body):
 	try:
 	    self.doRESOLVEURL(headers, body)
-	except up2dateErrors.Error, e:
+	except up2dateErrors.Error as e:
             self.answer("ERROR", {}, str(e))
 	except:
             self.answer("ERROR", {}, traceback.format_exc())

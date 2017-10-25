@@ -119,7 +119,11 @@ Python 3 specific files of %{name}
 %setup -q -n zypp-plugin-spacewalk
 
 %build
+%if %{with python3}
+grep -E -r -l "\#\!\s*/usr/bin/env\s+python" * | xargs -i -d "\n" sed -i -e"s:\#\![ \t]*/usr/bin/env[ \t]\+python:\#\!/usr/bin/python3:" {}
+%else
 grep -E -r -l "\#\!\s*/usr/bin/env\s+python" * | xargs -i -d "\n" sed -i -e"s:\#\![ \t]*/usr/bin/env[ \t]\+python:\#\!/usr/bin/python:" {}
+%endif
 
 %install
 %{__mkdir_p} %{buildroot}%{_prefix}/lib/zypp/plugins/services
