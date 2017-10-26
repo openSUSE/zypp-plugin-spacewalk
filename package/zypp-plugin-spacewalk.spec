@@ -78,7 +78,7 @@ Requires:       rhnlib
 BuildRequires:  python-devel
 %else
 Requires:       python3
-Requires:       zypp-plugin-python
+Requires:       python3-zypp-plugin
 Requires:       rhn-client-tools >= 2.8.4
 Requires:       python3-rhnlib
 BuildRequires:  python3-devel
