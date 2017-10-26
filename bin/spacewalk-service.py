@@ -34,6 +34,9 @@ if not os.path.exists("/etc/sysconfig/rhn/systemid"):
 sendback = sys.stdout
 sys.stdout = sys.stderr
 
+def _sendback(text):
+    sendback.write("{0}\n".format(text))
+
 try:
     sys.path.append("/usr/share/rhn/")
     from up2date_client import rhnChannel
@@ -48,51 +51,51 @@ except:
 
 try:
     svrChannels = rhnChannel.getChannelDetails()
-except up2dateErrors.NoSystemIdError, e:
+except up2dateErrors.NoSystemIdError as e:
     sys.stderr.write("%s\n" % e)
     sys.exit(42)
-except up2dateErrors.Error, e:
+except up2dateErrors.Error as e:
     sys.stderr.write("%s\n" % e)
     sys.exit(1)
 except:
     sys.exit(1)
 
 service_name = os.path.splitext(os.path.basename(sys.argv[0]))[0]
-print "# Channels for service %s" % service_name
+print("# Channels for service %s" % service_name)
 for channel in svrChannels:
-    print >>sendback
+    _sendback("")
     if channel['name']:
-        print >>sendback, "# Name:        %s" % utf8_encode(channel['name'])
+        _sendback("# Name:        %s" % utf8_encode(channel['name']))
     if channel['summary']:
-        print >>sendback, "# Summary:     %s" % utf8_encode(channel['summary'])
+        _sendback("# Summary:     %s" % utf8_encode(channel['summary']))
     if channel['description']:
-        print >>sendback, "# Description:"
+        _sendback("# Description:")
         for line in [line for line in channel['description'].split(os.linesep)]:
-            print >>sendback, "#   %s" % utf8_encode(line)
-        print >>sendback, "#"
+            _sendback("#   %s" % utf8_encode(line))
+        _sendback("#")
     if channel['type']:
-        print >>sendback, "# Type:         %s" % utf8_encode(channel['type'])
+        _sendback("# Type:         %s" % utf8_encode(channel['type']))
     if channel['version']:
-        print >>sendback, "# Version:      %s" % utf8_encode(channel['version'])
+        _sendback("# Version:      %s" % utf8_encode(channel['version']))
     if channel['arch']:
-        print >>sendback, "# Architecture: %s" % utf8_encode(channel['arch'])
+        _sendback("# Architecture: %s" % utf8_encode(channel['arch']))
     if channel['gpg_key_url']:
-        print >>sendback, "# Gpg Key:      %s" % utf8_encode(channel['gpg_key_url'])
-    print >>sendback, "[%s]" % utf8_encode(channel['label'])
-    print >>sendback, "name=%s" % utf8_encode(channel['name'])
+        _sendback("# Gpg Key:      %s" % utf8_encode(channel['gpg_key_url']))
+    _sendback("[%s]" % utf8_encode(channel['label']))
+    _sendback("name=%s" % utf8_encode(channel['name']))
     for i in range(0, len(channel['url'])):
-        print >>sendback, "baseurl=plugin:spacewalk?channel=%s&server=%d" % (utf8_encode(channel['label']),i)
-    print >>sendback, "enabled=1"
-    print >>sendback, "autorefresh=1"
+        _sendback("baseurl=plugin:spacewalk?channel=%s&server=%d" % (utf8_encode(channel['label']),i))
+    _sendback("enabled=1")
+    _sendback("autorefresh=1")
     if channel['type']:
-        print >>sendback, "type=%s" % utf8_encode(channel['type'])
+        _sendback("type=%s" % utf8_encode(channel['type']))
     if channel['gpg_key_url']:
-        print >>sendback, "gpgkey=%s" % utf8_encode(channel['gpg_key_url'])
+        _sendback("gpgkey=%s" % utf8_encode(channel['gpg_key_url']))
     # bnc#823917: Always disable gpgcheck as SMgr does not sign metadata,
     # even if the original gpg_key_url is known.
-    print >>sendback, "gpgcheck=0"
+    _sendback("gpgcheck=0")
     # fate#314603 check package signature if metadata not signed
     # allow disabling of package gpg check for custom channels
-    print >>sendback, "pkg_gpgcheck=%s" % utf8_encode(channel.dict.get('gpgcheck', "1"))
-    print >>sendback, "repo_gpgcheck=0"
+    _sendback("pkg_gpgcheck=%s" % utf8_encode(channel.dict.get('gpgcheck', "1")))
+    _sendback("repo_gpgcheck=0")
 

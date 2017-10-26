@@ -29,7 +29,10 @@ import xml.dom.minidom;
 from xml.dom import Node;
 
 from up2date_client import up2dateLog
-from actions.packages import Zypper
+try:
+    from actions.packages import Zypper
+except ImportError:
+    from rhn.actions.packages import Zypper
 
 log = up2dateLog.initLog()
 
