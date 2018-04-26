@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Thu Apr 26 09:43:14 UTC 2018 - mc@suse.com
+
+- 1.0.1
+- change pkg_gpgcheck setting to restore the old behaviour with
+  upstream Spacewalk (bsc#1091034)
+
+-------------------------------------------------------------------
 Thu Sep 28 07:42:59 UTC 2017 - mc@suse.com
 
 - 1.0.0
