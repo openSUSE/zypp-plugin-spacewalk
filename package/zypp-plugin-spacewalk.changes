@@ -1,4 +1,11 @@
 -------------------------------------------------------------------
+Wed May  2 14:52:13 UTC 2018 - mc@suse.com
+
+- 1.0.2
+- use standard python path for actions also when building
+  for older distributions (bsc#1091665)
+
+-------------------------------------------------------------------
 Thu Apr 26 09:43:14 UTC 2018 - mc@suse.com
 
 - 1.0.1

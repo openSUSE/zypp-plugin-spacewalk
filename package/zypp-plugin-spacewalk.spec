@@ -26,7 +26,7 @@
 %define pythonX python3
 %else
 %bcond_with python3
-%bcond_without rhnpath
+%bcond_with rhnpath
 %if %{with rhnpath}
 %global py2_actions %{_datadir}/rhn/
 %else
@@ -36,7 +36,7 @@
 %endif
 
 Name:           zypp-plugin-spacewalk
-Version:        1.0.1
+Version:        1.0.2
 Release:        0
 Summary:        Client side Spacewalk integration for ZYpp
 License:        GPL-2.0
