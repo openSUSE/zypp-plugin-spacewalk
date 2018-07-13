@@ -91,15 +91,17 @@ for channel in svrChannels:
         _sendback("type=%s" % utf8_encode(channel['type']))
     if channel['gpg_key_url']:
         _sendback("gpgkey=%s" % utf8_encode(channel['gpg_key_url']))
-    # bnc#823917: Always disable gpgcheck as SMgr does not sign metadata,
-    # even if the original gpg_key_url is known.
-    _sendback("gpgcheck=0")
-    # fate#314603 check package signature if metadata not signed
-    # allow disabling of package gpg check for custom channels
-    # This conditional should restore the old behaviour with upstream Spacewalk
-    if not channel.dict.get('gpgcheck', None) and not channel['gpg_key_url']:
-        _sendback("pkg_gpgcheck=0")
+    if channel.dict.get('metadata_signed', "0") == "1":
+        _sendback("gpgcheck=%s" % utf8_encode(channel.dict.get('gpgcheck', "1")))
     else:
-        _sendback("pkg_gpgcheck=%s" % utf8_encode(channel.dict.get('gpgcheck', "1")))
-    _sendback("repo_gpgcheck=0")
-
+        # bnc#823917: Always disable gpgcheck as SMgr does not sign metadata,
+        # even if the original gpg_key_url is known.
+        _sendback("gpgcheck=0")
+        # fate#314603 check package signature if metadata not signed
+        # allow disabling of package gpg check for custom channels
+        # This conditional should restore the old behaviour with upstream Spacewalk
+        if not channel.dict.get('gpgcheck', None) and not channel['gpg_key_url']:
+            _sendback("pkg_gpgcheck=0")
+        else:
+            _sendback("pkg_gpgcheck=%s" % utf8_encode(channel.dict.get('gpgcheck', "1")))
+        _sendback("repo_gpgcheck=0")

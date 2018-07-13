@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Jul 10 12:44:42 UTC 2018 - mc@suse.com
+
+- 1.0.4
+- turn on metadata signature checking if signature is available
+
+-------------------------------------------------------------------
 Thu May  3 14:33:41 UTC 2018 - mc@suse.com
 
 - 1.0.3
