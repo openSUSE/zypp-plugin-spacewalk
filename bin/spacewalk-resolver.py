@@ -96,7 +96,7 @@ class SpacewalkResolverPlugin(Plugin):
             login_info = up2dateAuth.getLoginInfo(timeout=timeout)
         else:
             login_info = up2dateAuth.getLoginInfo()
-        for k,v in login_info.items():
+        for k,v in list(login_info.items()):
             if k in spacewalk_auth_headers:
                 self.auth_headers[k] = v
         #self.answer("META", li)
