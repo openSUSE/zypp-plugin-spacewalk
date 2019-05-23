@@ -82,7 +82,7 @@ class Plugin:
 
     def answer(self, command, headers={}, body=""):
         pluginSendback.write("%s\n" % command)
-        for k,v in headers.items():
+        for k,v in list(headers.items()):
             pluginSendback.write("%s:%s\n" % (k,v))
         pluginSendback.write("\n")
         pluginSendback.write(body)

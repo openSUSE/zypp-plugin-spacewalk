@@ -52,7 +52,7 @@ def __strip_message(code, message, response):
 
 def _change_product(params):
     """Change the product info in /etc/products.d manually"""
-    if not params.has_key('products') or not params['products']:
+    if 'products' not in params or not params['products']:
         return 0
 
     log.log_me("Manually product change requested: %s" % params['products'])
@@ -173,17 +173,17 @@ def upgrade(params, cache_only=None):
     if cache_only:
         return (0, "no-ops for caching", {})
 
-    if params.has_key('dry_run') and params['dry_run']:
+    if 'dry_run' in params and params['dry_run']:
         dry_run = True
 
-    if params.has_key('full_update') and params['full_update']:
+    if 'full_update' in params and params['full_update']:
         full_update = True
 
-    if not dry_run and params.has_key('change_product') and params['change_product']:
+    if not dry_run and 'change_product' in params and params['change_product']:
         _change_product(params)
 
     dup_channel_names = None
-    if params.has_key('dup_channel_names') and type(params['dup_channel_names']) == type([]):
+    if 'dup_channel_names' in params and type(params['dup_channel_names']) == type([]):
         dup_channel_names = params['dup_channel_names']
 
     zypper = Zypper()

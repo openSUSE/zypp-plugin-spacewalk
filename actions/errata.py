@@ -70,23 +70,23 @@ def old_update(errataidlist, cache_only=None):
     if len(packagelist[0]) > 4:
         # Newer sats send down arch, filter using name+arch
         for p in packagelist:
-            if current_packages_with_arch.has_key(p[0]+p[4]):
+            if p[0]+p[4] in current_packages_with_arch:
                 u[p[0]+p[4]] = p
-            elif current_packages_with_arch.has_key(p[0]+"noarch"):
+            elif p[0]+"noarch" in current_packages_with_arch:
                 u[p[0]+p[4]] = p
-            elif p[4] == "noarch" and current_packages.has_key(p[0]):
+            elif p[4] == "noarch" and p[0] in current_packages:
                 u[p[0]] = p
     else:
         # 5.2 and older sats + hosted dont send arch
         for p in packagelist:
-            if current_packages.has_key(p[0]):
+            if p[0] in current_packages:
                 u[p[0]] = p
 
 
     # XXX: Fix me - once we keep all errata packages around,
     # this is the WRONG thing to do - we want to keep the specific versions
     # that the user has asked for.
-    packagelist = map(lambda a: u[a], u.keys())
+    packagelist = [u[a] for a in list(u.keys())]
 
     if packagelist == []:
         data = {}
