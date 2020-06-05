@@ -31,14 +31,8 @@ if not os.path.exists("/etc/sysconfig/rhn/systemid"):
 # ma@suse.de: some modules seem to write debug output to stdout,
 # so we redirect it to stderr and use the original stdout for
 # sending back the result.
-if sys.version_info[0] >= 3:
-    sendback = sys.stdout.buffer
-else:
-    sendback = sys.stdout
+sendback = sys.stdout
 sys.stdout = sys.stderr
-
-def _sendback(text):
-    sendback.write("{0}\n".format(text).encode())
 
 try:
     sys.path.append("/usr/share/rhn/")
@@ -51,6 +45,9 @@ try:
 except:
     sys.stderr.write("%sPlease install package spacewalk-backend-libs.\n" % traceback.format_exc())
     sys.exit(1)
+
+def _sendback(text):
+    sendback.write(utf8_encode("{0}\n".format(text)))
 
 try:
     svrChannels = rhnChannel.getChannelDetails()
