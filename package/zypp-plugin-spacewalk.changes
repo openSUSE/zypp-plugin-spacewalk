@@ -1,3 +1,7 @@
+-------------------------------------------------------------------
+Fri Jun  5 11:27:08 UTC 2020 - Pablo Suárez Hernández <pablo.suarezhernandez@suse.com>
+
+- 1.0.7
 - Prevent issue with non-ASCII characters in Python 2 systems (bsc#1172462)
 
 -------------------------------------------------------------------
