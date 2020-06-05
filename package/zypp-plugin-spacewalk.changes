@@ -1,3 +1,5 @@
+- Prevent issue with non-ASCII characters in Python 2 systems (bsc#1172462)
+
 -------------------------------------------------------------------
 Fri Oct 25 08:24:48 UTC 2019 - Pablo Suárez Hernández <pablo.suarezhernandez@suse.com>
 
