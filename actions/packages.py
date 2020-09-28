@@ -170,15 +170,16 @@ class Zypper:
             args.append("--download-only")
         if dry_run:
             args.append("--dry-run")
-        if allow_vendor_change and self.dup_version == 2:
-            args.append("--allow-vendor-change")
         if self.dup_version == 1:
             if channel_names and type(channel_names) == type([]):
                 for name in channel_names:
                     args.append("--from")
                     args.append("spacewalk:%s" % name)
-        elif not allow_vendor_change and self.dup_version == 2:
-            args.append("--no-allow-vendor-change")
+        elif self.dup_version == 2:
+            if allow_vendor_change:
+                args.append("--allow-vendor-change")
+            else:
+                args.append("--no-allow-vendor-change")
         return self.__execute(args)
 
     def distupgrade(self, channel_names=None, dry_run=False, allow_vendor_change=False, run_patch=True):
@@ -472,5 +473,4 @@ if __name__ == "__main__":
             [ ['bar', '2.0.0', '2', '', ''], 'i'] ]}
     #zypper = Zypper()
     #print zypper.__transact_args__(transaction)
-
 
