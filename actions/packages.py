@@ -163,25 +163,27 @@ class Zypper:
 
         return self.__execute(args)
 
-    def dup(self, channel_names=None, dry_run=False):
+    def dup(self, channel_names=None, dry_run=False, allow_vendor_change=False):
         args = ["-n", "-x", "dup", "--auto-agree-with-licenses"]
 
         if self.download_only:
             args.append("--download-only")
         if dry_run:
             args.append("--dry-run")
+        if allow_vendor_change and self.dup_version == 2:
+            args.append("--allow-vendor-change")
         if self.dup_version == 1:
             if channel_names and type(channel_names) == type([]):
                 for name in channel_names:
                     args.append("--from")
                     args.append("spacewalk:%s" % name)
-        elif self.dup_version == 2:
+        elif not allow_vendor_change and self.dup_version == 2:
             args.append("--no-allow-vendor-change")
         return self.__execute(args)
 
-    def distupgrade(self, channel_names=None, dry_run=False, run_patch=True):
+    def distupgrade(self, channel_names=None, dry_run=False, allow_vendor_change=False, run_patch=True):
         (status, message, data) = self.refresh()
-        (status, message, data) = self.dup(channel_names, dry_run)
+        (status, message, data) = self.dup(channel_names, dry_run, allow_vendor_change)
         if dry_run or (status > 0 and status < 100) or not run_patch:
             return (status, message, data)
         (pstat, pmsg, pdata) = self.patch()
