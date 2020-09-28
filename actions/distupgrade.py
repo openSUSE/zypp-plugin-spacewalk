@@ -144,6 +144,9 @@ def upgrade(params, cache_only=None):
             'dry_run': True|False
             run without changing the system
 
+            'allow_vendor_change': True|False
+            allow vendor changes during dist upgrades
+
             'change_product': True|False
             Some migrations require a manual change of the products.
             Typpical SLE10 installations. If a manual change should be
@@ -166,6 +169,7 @@ def upgrade(params, cache_only=None):
     """
     log.log_me("distupgrade.upgrade: %s" % params)
     dry_run = False
+    allow_vendor_change = False
     full_update = False
     if type(params) != type({}):
         return (13, "Invalid arguments passed to function", {})
@@ -175,6 +179,9 @@ def upgrade(params, cache_only=None):
 
     if 'dry_run' in params and params['dry_run']:
         dry_run = True
+
+    if 'allow_vendor_change' in params and params['allow_vendor_change']:
+        allow_vendor_change = True
 
     if 'full_update' in params and params['full_update']:
         full_update = True
@@ -188,7 +195,8 @@ def upgrade(params, cache_only=None):
 
     zypper = Zypper()
     log.log_me("Called dist upgrade ", dup_channel_names)
-    (status, message, data) = zypper.distupgrade(channel_names=dup_channel_names, dry_run=dry_run, run_patch=full_update)
+    (status, message, data) = zypper.distupgrade(channel_names=dup_channel_names, dry_run=dry_run,
+                                                 allow_vendor_change=allow_vendor_change, run_patch=full_update)
 
     return __strip_message(status, message, data)
 
