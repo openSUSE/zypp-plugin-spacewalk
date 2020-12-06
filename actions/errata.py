@@ -98,7 +98,12 @@ def old_update(errataidlist, cache_only=None):
 
     return packages.update(packagelist, cache_only)
 
-def update(errataidlist, cache_only=None):
+def update(params, cache_only=None):
+    if type(params) == dict:
+        errataidlist = params['errata_ids']
+        allow_vendor_change = params.get('allow_vendor_change', False)
+    else:
+        allow_vendor_change = False
 
     if type(errataidlist) not in [type([]), type(())]:
         errataidlist = [ errataidlist ]
@@ -110,7 +115,7 @@ def update(errataidlist, cache_only=None):
         erratas = s.errata.getErrataNamesById(system_id, errataidlist)
         errata_names = [tup[1] for tup in erratas]
 
-        return packages.patch_install(errata_names, cache_only)
+        return packages.patch_install(errata_names, cache_only, allow_vendor_change)
     else:
         # see XXX comment in old_update's method definition
         old_update(errataidlist, cache_only)

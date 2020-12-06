@@ -153,13 +153,15 @@ class Zypper:
             args.extend(package_list)
         return self.__execute(args)
 
-    def patch(self, updatestack_only=False):
+    def patch(self, updatestack_only=False, allow_vendor_change=False):
         args = ["-n", "-x", "patch", "--auto-agree-with-licenses"]
 
         if self.download_only:
             args.append("--download-only")
         if updatestack_only and self.dup_version == 2:
             args.append("--updatestack-only")
+        if allow_vendor_change:
+            args.append("--allow-vendor-chnage")
 
         return self.__execute(args)
 
@@ -233,9 +235,11 @@ class Zypper:
                 assert False, "Unknown package transaction action."
         return args
 
-    def patch_install(self, patch_list):
+    def patch_install(self, patch_list, allow_vendor_change=False):
         args = ["-n", "-x", "install", "--auto-agree-with-licenses"]
 
+        if allow_vendor_change:
+            args.append("--allow-vendor-change")
         if self.download_only:
             args.append("--download-only")
 
@@ -327,11 +331,11 @@ def update(package_list, cache_only=None):
     zypper = Zypper(download_only=cache_only)
     return __strip_message(zypper.install([__package_name_from_tup__(x) for x in package_list]))
 
-def patch_install(patch_list, cache_only=None):
+def patch_install(patch_list, cache_only=None, allow_vendor_change=False):
     log.log_me("Called patch install", patch_list)
 
     zypper = Zypper(download_only=cache_only)
-    return __strip_message(zypper.patch_install(patch_list))
+    return __strip_message(zypper.patch_install(patch_list, allow_vendor_change))
 
 def runTransaction(transaction_data, cache_only=None):
     """ Run a transaction on a group of packages.
