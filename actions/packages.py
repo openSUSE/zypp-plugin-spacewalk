@@ -160,8 +160,8 @@ class Zypper:
             args.append("--download-only")
         if updatestack_only and self.dup_version == 2:
             args.append("--updatestack-only")
-        if allow_vendor_change:
-            args.append("--allow-vendor-chnage")
+        if allow_vendor_change and self.dup_version == 2:
+            args.append("--allow-vendor-change")
 
         return self.__execute(args)
 
@@ -238,7 +238,7 @@ class Zypper:
     def patch_install(self, patch_list, allow_vendor_change=False):
         args = ["-n", "-x", "install", "--auto-agree-with-licenses"]
 
-        if allow_vendor_change:
+        if allow_vendor_change and self.dup_version == 2:
             args.append("--allow-vendor-change")
         if self.download_only:
             args.append("--download-only")
@@ -477,4 +477,3 @@ if __name__ == "__main__":
             [ ['bar', '2.0.0', '2', '', ''], 'i'] ]}
     #zypper = Zypper()
     #print zypper.__transact_args__(transaction)
-
