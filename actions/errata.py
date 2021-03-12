@@ -104,6 +104,7 @@ def update(params, cache_only=None):
         allow_vendor_change = params.get('allow_vendor_change', False)
     else:
         allow_vendor_change = False
+        errataidlist = params
 
     if type(errataidlist) not in [type([]), type(())]:
         errataidlist = [ errataidlist ]
