@@ -144,22 +144,26 @@ class Zypper:
         args.extend(package_list)
         return self.__execute(args)
 
-    def update(self, package_list=[]):
+    def update(self, package_list=[], allow_vendor_change=False):
         args = ["-n", "-x", "update", "--auto-agree-with-licenses"]
 
         if self.download_only:
             args.append("--download-only")
         if len(package_list) > 0:
             args.extend(package_list)
+        if allow_vendor_change and self.dup_version == 2:
+            args.append("--allow-vendor-change")
         return self.__execute(args)
 
-    def patch(self, updatestack_only=False):
+    def patch(self, updatestack_only=False, allow_vendor_change=False):
         args = ["-n", "-x", "patch", "--auto-agree-with-licenses"]
 
         if self.download_only:
             args.append("--download-only")
         if updatestack_only and self.dup_version == 2:
             args.append("--updatestack-only")
+        if allow_vendor_change and self.dup_version == 2:
+            args.append("--allow-vendor-change")
 
         return self.__execute(args)
 
@@ -233,9 +237,11 @@ class Zypper:
                 assert False, "Unknown package transaction action."
         return args
 
-    def patch_install(self, patch_list):
+    def patch_install(self, patch_list, allow_vendor_change=False):
         args = ["-n", "-x", "install", "--auto-agree-with-licenses"]
 
+        if allow_vendor_change and self.dup_version == 2:
+            args.append("--allow-vendor-change")
         if self.download_only:
             args.append("--download-only")
 
@@ -318,20 +324,20 @@ def remove(package_list, cache_only=None):
     zypper = Zypper()
     return __strip_message(zypper.remove([__package_name_from_tup__(x) for x in package_list]))
 
-def update(package_list, cache_only=None):
+def update(package_list, cache_only=None, allow_vendor_change=False):
     """We have been told that we should retrieve/install packages"""
     if type(package_list) != type([]):
         return (13, "Invalid arguments passed to function", {})
 
     log.log_me("Called update", package_list)
     zypper = Zypper(download_only=cache_only)
-    return __strip_message(zypper.install([__package_name_from_tup__(x) for x in package_list]))
+    return __strip_message(zypper.install([__package_name_from_tup__(x) for x in package_list], allow_vendor_change))
 
-def patch_install(patch_list, cache_only=None):
+def patch_install(patch_list, cache_only=None, allow_vendor_change=False):
     log.log_me("Called patch install", patch_list)
 
     zypper = Zypper(download_only=cache_only)
-    return __strip_message(zypper.patch_install(patch_list))
+    return __strip_message(zypper.patch_install(patch_list, allow_vendor_change))
 
 def runTransaction(transaction_data, cache_only=None):
     """ Run a transaction on a group of packages.
@@ -346,10 +352,10 @@ def runTransaction(transaction_data, cache_only=None):
     zypper = Zypper()
     return __strip_message(zypper.transact(transaction_data))
 
-def fullUpdate(force=0, cache_only=None):
+def fullUpdate(force=0, cache_only=None, allow_vendor_change=False):
     """ Update all packages on the system. """
     zypper = Zypper(download_only=cache_only)
-    return __strip_message(zypper.update())
+    return __strip_message(zypper.update(allow_vendor_change=allow_vendor_change))
 
 def checkNeedUpdate(rhnsd=None, cache_only=None):
     """ Check if the locally installed package list changed, if
@@ -473,4 +479,3 @@ if __name__ == "__main__":
             [ ['bar', '2.0.0', '2', '', ''], 'i'] ]}
     #zypper = Zypper()
     #print zypper.__transact_args__(transaction)
-

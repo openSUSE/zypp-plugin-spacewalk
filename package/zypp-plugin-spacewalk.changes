@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Fri Mar 12 09:43:07 UTC 2021 - Martin Seidl <mseidl@suse.de>
+
+- 1.0.9
+- support for "allow vendor change" for patching/upgrading
+
+-------------------------------------------------------------------
 Thu Oct  8 11:27:08 UTC 2020 - Martin Seidl <mseidl@suse.de>
 
 - 1.0.8
