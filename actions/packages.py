@@ -130,11 +130,13 @@ class Zypper:
         args = ["-n", "-x", "refresh", "-s"]
         return self.__execute(args)
 
-    def install(self, package_list):
+    def install(self, package_list, allow_vendor_change=False):
         args = ["-n", "-x", "install", "--oldpackage", "--auto-agree-with-licenses"]
 
         if self.download_only:
             args.append("--download-only")
+        if allow_vendor_change and self.dup_version == 2:
+            args.append("--allow-vendor-change")
 
         args.extend(package_list)
         return self.__execute(args)
