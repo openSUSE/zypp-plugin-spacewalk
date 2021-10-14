@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Thu Oct 14 09:09:38 UTC 2021 - Michael Calmer <mc@suse.com>
+
+- 1.0.10
+  * Use proxy configured in up2date config when it is defined
+
+-------------------------------------------------------------------
 Thu Oct 14 06:16:09 UTC 2021 - Stefan Bluhm <stefan.bluhm@clacee.eu>
 
 - Added RHEL8 build.
