@@ -60,6 +60,9 @@ except up2dateErrors.Error as e:
 except:
     sys.exit(1)
 
+enable_proxy = rhnChannel.config.cfg['enableProxy']
+proxy_config = rhnChannel.config.getProxySetting()
+
 service_name = os.path.splitext(os.path.basename(sys.argv[0]))[0]
 print("# Channels for service %s" % service_name)
 for channel in svrChannels:
@@ -105,3 +108,5 @@ for channel in svrChannels:
         else:
             _sendback("pkg_gpgcheck=%s" % utf8_encode(channel.dict.get('gpgcheck', "1")))
         _sendback("repo_gpgcheck=0")
+    if enable_proxy == 1 and proxy_config:
+        _sendback("proxy=%s" % proxy_config)
