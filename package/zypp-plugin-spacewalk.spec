@@ -18,7 +18,7 @@
 
 %{!?python2_sitelib: %global python2_sitelib %(python -c "from distutils.sysconfig import get_python_lib; print get_python_lib()")}
 
-%if 0%{?suse_version} > 1320
+%if 0%{?suse_version} > 1320 || 0%{?rhel} >= 8
 %bcond_without python3
 %bcond_with rhnpath
 %global py2_actions %{python2_sitelib}/rhn
