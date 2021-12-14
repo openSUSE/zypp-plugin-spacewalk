@@ -36,7 +36,7 @@
 %endif
 
 Name:           zypp-plugin-spacewalk
-Version:        1.0.10
+Version:        1.0.11
 Release:        0
 Summary:        Client side Spacewalk integration for ZYpp
 License:        GPL-2.0
@@ -82,6 +82,7 @@ Requires:       python3-zypp-plugin
 Requires:       rhn-client-tools >= 2.8.4
 Requires:       python3-rhnlib
 BuildRequires:  python3-devel
+BuildRequires:  python3-rpm-macros
 %endif
 %if %{without rhnpath}
 Requires:       %{pythonX}-%{name} = %{version}-%{release}
