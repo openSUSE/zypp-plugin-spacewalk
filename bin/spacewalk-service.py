@@ -39,7 +39,7 @@ try:
     from up2date_client import rhnChannel
     from up2date_client import up2dateErrors
     try:
-        from up2date_client.rhncli import utf8_encode
+        from rhn.stringutils import sstr as utf8_encode
     except ImportError:
         from rhn.i18n import sstr as utf8_encode
 except:
