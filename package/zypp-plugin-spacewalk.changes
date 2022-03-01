@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Tue Mar  1 08:56:55 UTC 2022 - Michael Calmer <mc@suse.com>
+
+- 1.0.12
+  * use new encoding function if available
+
+-------------------------------------------------------------------
 Tue Dec 14 08:36:46 UTC 2021 - Michael Calmer <mc@suse.com>
 
 - 1.0.11
