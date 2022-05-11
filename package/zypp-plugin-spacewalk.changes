@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Wed May 11 09:22:18 UTC 2022 - Cédric Bosdonnat <cbosdonnat@suse.com>
+
+- 1.0.13
+  * Log in before listing channels. bsc#1197963, bsc#1193585
+
+-------------------------------------------------------------------
 Tue Mar  1 08:56:55 UTC 2022 - Michael Calmer <mc@suse.com>
 
 - 1.0.12

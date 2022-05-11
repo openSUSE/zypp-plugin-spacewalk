@@ -36,7 +36,7 @@
 %endif
 
 Name:           zypp-plugin-spacewalk
-Version:        1.0.12
+Version:        1.0.13
 Release:        0
 Summary:        Client side Spacewalk integration for ZYpp
 License:        GPL-2.0
