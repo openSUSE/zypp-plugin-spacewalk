@@ -78,6 +78,16 @@ class SpacewalkResolverPlugin(Plugin):
         # do we have spacewalk-client-tools with timeout option?
         args = getargspec(rhnChannel.getChannelDetails)[0]
         timeout = self._getTimeout()
+
+        self.auth_headers = {}
+        if 'timeout' in args:
+            login_info = up2dateAuth.getLoginInfo(timeout=timeout)
+        else:
+            login_info = up2dateAuth.getLoginInfo()
+        for k,v in list(login_info.items()):
+            if k in spacewalk_auth_headers:
+                self.auth_headers[k] = v
+
         if 'timeout' in args:
             details = rhnChannel.getChannelDetails(timeout=timeout)
         else:
@@ -90,16 +100,6 @@ class SpacewalkResolverPlugin(Plugin):
         if not self.channel:
             self.answer("ERROR", {}, "Can't retrieve information for channel %s" % headers['channel'])
             return
-
-        self.auth_headers = {}
-        if 'timeout' in args:
-            login_info = up2dateAuth.getLoginInfo(timeout=timeout)
-        else:
-            login_info = up2dateAuth.getLoginInfo()
-        for k,v in list(login_info.items()):
-            if k in spacewalk_auth_headers:
-                self.auth_headers[k] = v
-        #self.answer("META", li)
 
         proxystr = ""
         if rhnChannel.config.cfg['enableProxy'] == 1:
