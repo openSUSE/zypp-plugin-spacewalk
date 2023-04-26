@@ -1,7 +1,7 @@
 #
 # spec file for package zypp-plugin-spacewalk
 #
-# Copyright (c) 2017 SUSE LINUX GmbH, Nuernberg, Germany.
+# Copyright (c) 2023 SUSE LLC
 #
 # All modifications and additions to the file contributed by third parties
 # remain the property of their copyright owners, unless otherwise agreed
@@ -12,7 +12,7 @@
 # license that conforms to the Open Source Definition (Version 1.9)
 # published by the Open Source Initiative.
 
-# Please submit bugfixes or comments via http://bugs.opensuse.org/
+# Please submit bugfixes or comments via https://bugs.opensuse.org/
 #
 
 
@@ -36,12 +36,12 @@
 %endif
 
 Name:           zypp-plugin-spacewalk
-Version:        1.0.13
+Version:        1.0.14
 Release:        0
 Summary:        Client side Spacewalk integration for ZYpp
-License:        GPL-2.0
+License:        GPL-2.0-only
 Group:          System Environment/Base
-Url:            https://github.com/openSUSE/zypp-plugin-spacewalk
+URL:            https://github.com/openSUSE/zypp-plugin-spacewalk
 Source0:        zypp-plugin-spacewalk.tar.bz2
 Source1:        zypp-plugin-spacewalk-rpmlintrc
 # Actually needs just libzypp, but we also want zypper to
@@ -72,15 +72,15 @@ Requires:       zypper(oldpackage)
 %if %{without python3}
 Requires:       python
 Requires:       python-xml
-Requires:       zypp-plugin-python
 Requires:       rhn-client-tools >= 1.7.7
 Requires:       rhnlib
+Requires:       zypp-plugin-python
 BuildRequires:  python-devel
 %else
 Requires:       python3
+Requires:       python3-rhnlib
 Requires:       python3-zypp-plugin
 Requires:       rhn-client-tools >= 2.8.4
-Requires:       python3-rhnlib
 BuildRequires:  python3-devel
 BuildRequires:  python3-rpm-macros
 %endif
