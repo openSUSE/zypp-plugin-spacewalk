@@ -1,4 +1,10 @@
 -------------------------------------------------------------------
+Mon Mar 11 14:22:34 UTC 2024 - Cédric Bosdonnat <cbosdonnat@suse.com>
+
+- 1.0.15
+  * Remove the traditional stack actions
+
+-------------------------------------------------------------------
 Wed Apr 26 11:19:16 UTC 2023 - Julio González Gil <jgonzalez@suse.com>
 
 - 1.0.14

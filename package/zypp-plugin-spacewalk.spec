@@ -20,23 +20,12 @@
 
 %if 0%{?suse_version} > 1320 || 0%{?rhel} >= 8
 %bcond_without python3
-%bcond_with rhnpath
-%global py2_actions %{python2_sitelib}/rhn
-%global py3_actions %{python3_sitelib}/rhn
-%define pythonX python3
 %else
 %bcond_with python3
-%bcond_with rhnpath
-%if %{with rhnpath}
-%global py2_actions %{_datadir}/rhn/
-%else
-%define pythonX python2
-%global py2_actions %{python2_sitelib}/rhn
-%endif
 %endif
 
 Name:           zypp-plugin-spacewalk
-Version:        1.0.14
+Version:        1.0.15
 Release:        0
 Summary:        Client side Spacewalk integration for ZYpp
 License:        GPL-2.0-only
@@ -84,9 +73,6 @@ Requires:       rhn-client-tools >= 2.8.4
 BuildRequires:  python3-devel
 BuildRequires:  python3-rpm-macros
 %endif
-%if %{without rhnpath}
-Requires:       %{pythonX}-%{name} = %{version}-%{release}
-%endif
 
 Provides:       zypp-media-plugin(spacewalk) = %{version}
 Provides:       zypp-service-plugin(spacewalk) = %{version}
@@ -99,31 +85,6 @@ BuildRoot:      %{_tmppath}/%{name}-%{version}-build
 This plugin allows a ZYpp powered Linux system to see Spacewalk
 subscribed repositories as well as downloading packages from the
 a Spacewalk compatible server.
-
-%if %{without rhnpath}
-%package -n python2-%{name}
-Summary:        Client side Spacewalk integration for ZYpp
-Group:          System Environment/Base
-Requires:       %{name} = %{version}-%{release}
-Requires:       python2-rhn-client-tools >= 2.8.4
-BuildRequires:  python-devel
-
-%description -n python2-%{name}
-Python 2 specific files of %{name}
-%endif
-
-%if %{with python3}
-%package -n python3-%{name}
-Summary:        Client side Spacewalk integration for ZYpp
-Group:          System Environment/Base
-Requires:       %{name} = %{version}-%{release}
-BuildRequires:  python3-devel
-Requires:       python3
-Requires:       python3-rhn-client-tools >= 2.8.4
-
-%description -n python3-%{name}
-Python 3 specific files of %{name}
-%endif
 
 %prep
 %setup -q -n zypp-plugin-spacewalk
@@ -145,18 +106,6 @@ grep -E -r -l "\#\!\s*/usr/bin/env\s+python" * | xargs -i -d "\n" sed -i -e"s:\#
 %{__install} bin/spacewalk-system.py %{buildroot}%{_prefix}/lib/zypp/plugins/system/spacewalk
 %{__install} bin/spacewalk-resolver.py %{buildroot}%{_prefix}/lib/zypp/plugins/urlresolver/spacewalk
 
-%{__mkdir_p} %{buildroot}%{py2_actions}/actions
-%{__install} actions/packages.py %{buildroot}%{py2_actions}/actions/
-%{__install} actions/errata.py %{buildroot}%{py2_actions}/actions/
-%{__install} actions/distupgrade.py %{buildroot}%{py2_actions}/actions/
-
-%if %{with python3}
-%{__mkdir_p} %{buildroot}%{py3_actions}/actions
-%{__install} actions/packages.py %{buildroot}%{py3_actions}/actions/
-%{__install} actions/errata.py %{buildroot}%{py3_actions}/actions/
-%{__install} actions/distupgrade.py %{buildroot}%{py3_actions}/actions/
-%endif
-
 %{__install} -m 0644 clientCaps/packages %{buildroot}%{_sysconfdir}/sysconfig/rhn/clientCaps.d/
 %if 0%{?sle_version} >= 120000
 %{__install} -m 0644 clientCaps/distupgrade2 %{buildroot}%{_sysconfdir}/sysconfig/rhn/clientCaps.d/distupgrade
@@ -165,13 +114,6 @@ grep -E -r -l "\#\!\s*/usr/bin/env\s+python" * | xargs -i -d "\n" sed -i -e"s:\#
 %endif
 
 %{__mkdir_p} %{buildroot}%{_var}/lib/up2date
-
-%if 0%{?suse_version}
-%py_compile %{buildroot}%{py2_actions}
-%if %{with python3}
-%py3_compile %{buildroot}/%{py3_actions}
-%endif
-%endif
 
 %files
 %defattr(-,root,root)
@@ -184,39 +126,10 @@ grep -E -r -l "\#\!\s*/usr/bin/env\s+python" * | xargs -i -d "\n" sed -i -e"s:\#
      %{_prefix}/lib/zypp/plugins/system/spacewalk
 %dir %{_prefix}/lib/zypp/plugins/urlresolver
      %{_prefix}/lib/zypp/plugins/urlresolver/spacewalk
-%if %{with rhnpath}
-%dir %{_datadir}/rhn
-%dir %{_datadir}/rhn/actions
-     %{_datadir}/rhn/actions/packages.py*
-     %{_datadir}/rhn/actions/errata.py*
-     %{_datadir}/rhn/actions/distupgrade.py*
-%endif
 %dir %{_var}/lib/up2date
 %dir %{_sysconfdir}/sysconfig/rhn
 %dir %{_sysconfdir}/sysconfig/rhn/clientCaps.d
 %config %{_sysconfdir}/sysconfig/rhn/clientCaps.d/packages
 %config %{_sysconfdir}/sysconfig/rhn/clientCaps.d/distupgrade
-
-%if %{without rhnpath}
-%files -n python2-%{name}
-%defattr(-,root,root)
-%dir %{py2_actions}
-%dir %{py2_actions}/actions
-     %{py2_actions}/actions/packages.py*
-     %{py2_actions}/actions/errata.py*
-     %{py2_actions}/actions/distupgrade.py*
-%endif
-
-%if %{with python3}
-%files -n python3-%{name}
-%defattr(-,root,root)
-%dir %{py3_actions}
-%dir %{py3_actions}/actions
-%dir %{py3_actions}/actions/__pycache__
-     %{py3_actions}/actions/packages.py*
-     %{py3_actions}/actions/errata.py*
-     %{py3_actions}/actions/distupgrade.py*
-     %{py3_actions}/actions/__pycache__/*.py*
-%endif
 
 %changelog
